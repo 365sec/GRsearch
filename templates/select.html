@@ -1,0 +1,586 @@
+<!DOCTYPE html >
+<html>
+	{% load staticfiles %}
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>规则选择</title>
+		<meta name="csrf-param" content="authenticity_token">
+		<meta name="csrf-token" content="AjLwigFmMBHiHrySvr2mVhxroD7PY5kXC/55d4bKi2MIPKQ0hjMn0jiGKs/qPEbZe08p/RbI1BZFQ3GZx2iEcQ==">
+		<style type="text/css">
+			.turbolinks-progress-bar {
+				position: fixed;
+				display: block;
+				top: 0;
+				left: 0;
+				height: 3px;
+				background: #0076ff;
+				z-index: 9999;
+				transition: width 300ms ease-out, opacity 150ms 150ms ease-in;
+				transform: translate3d(0, 0, 0);
+			}
+		</style>
+
+		<script src="https://hm.baidu.com/hm.js?9490413c5eebdadf757c2be2c816aedf "></script>
+		<script>
+			//<![CDATA[
+
+			//]]>
+		</script>
+		<link rel="stylesheet" media="all" href="{% static 'assets/fofa/skin1/fofa-63590d352eb5653130e3f9f4d81a967da4c231f4688d6291f6cda7a86aa041cf.css' %}" data-turbolinks-track="reload">
+		<script src="{% static 'assets/fofa/fofa-d68d517bf641867705600d20bd610400f43bfcf590f485d2973a19e2e3100c84.js' %}" data-turbolinks-track="reload"></script>
+		<script type="text/javascript">
+			$(function() {
+
+				base.mod_close();
+
+				$(".close").click(function() {
+					$("body").css('background-size', '80% auto');
+
+				});
+
+				$("#but_zc").click(function() {
+					$("#mod_zc").show();
+					$(".mod_centerbg").show();
+
+				});
+
+				$("#but_dl").click(function() {
+					$("#mod_dl").show();
+					$(".mod_centerbg").show();
+
+				});
+
+				$(".input1").focus(function() {
+					$(".search").addClass("sea_act");
+				}).blur(function() {
+					$(".search").removeClass("sea_act");
+				});
+
+			});
+
+		</script>
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+				var hm = document.createElement("script");
+				hm.src = "https://hm.baidu.com/hm.js?9490413c5eebdadf757c2be2c816aedf ";
+				var s = document.getElementsByTagName("script")[0];
+				s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+
+	<body>
+		<div class="container">
+
+		</div>
+
+		<style type="text/css">
+			h2 {
+				color: #28fefc;
+			}
+			h3 {
+				color: #efefef;
+			}
+			.panel {
+				border: 0px solid transparent;
+				box-shadow: 0 0px 5px rgba(34,266,266,0.9);
+			}
+
+		</style>
+
+		<script type="text/javascript">
+			$(function() {
+				base.qh_title(".qt_qh a", ".zt_all .zt_main", "act");
+				$(".center_qh a").click(function() {
+					$(this).addClass("act").siblings().removeClass();
+
+				});
+			});
+
+		</script>
+		<div class="gzflash">
+			<div class="box flash1">
+				<div class="txt">
+					<div class="txt1">
+						全球规则检索专题
+					</div>
+					<div class="txt2">
+						包含数据库、工控等
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="list_main">
+			<div class="container mar_t30">
+				<div class="row">
+					<div class="col-lg-12  list_r pad_r30 pad_l30 col_f" style="line-height:1.3em;">
+						<h2 class="gzh1">协议</h2>
+						<div class="gzh2">
+							该专题分为数据库专题模块与工控专题模块。在数据库专题模块，包含了检索大部分的数据库服务与协议的规则；在工控专题模块，提供了在世界上广泛使用的工业控制协议的介绍与检索。在模块内部您可以通过点击相关链接的方式进行协议或服务的快速查询。
+						</div>
+						<div class=" mar_30"></div>
+						<div class="qt_qh mar_b30">
+							<a class="act" href="javascript:void(0)"> 数据库专题</a><a href="javascript:void(0)" class=""> 工控专题</a>
+						</div>
+						<div class="clear"></div>
+						<div class="zt_all">
+							<div class="zt_main" style="display: block;">
+								<div class="grid mar_t30">
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												Mysql
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/mysql.png' %}" alt="">
+												<a href="http://172.16.39.99:8000/scan/?q=tags:mysql&s_type=ipv4">MySQL是一个开放源码的小型关联式数据库管理系统。由于其体积小、速度快、总体成本低，源码开发，目前MySQL被广泛地应用于中小型网站中。</a>
+												<a class="ico" href="http://172.16.39.99:8000/scan/?q=tags:mysql&s_type=ipv4"></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												PostgreSQL
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/postgresql.png' %}" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9cG9zdGdyZXM%3D">PostgreSQL是一个基于BSD许可发行的关系型数据库。它支持大部分SQL标准并提供了许多其他特性：复杂查询、外键、触发器、视图、事务完整性、MVCC等。</a>
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9cG9zdGdyZXM%3D"></a>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												MongoDB
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/mongodb.png' %}" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9bW9uZ29kYg%3D%3D">MongoDB是一个由C++语言编写的，基于分布式文件存储的数据库，其存储使用JSON风格的数据格式。因此可以存储比较复杂的数据类型。</a>
+												<a class="ico" result?qbase64="cHJvdG9jb2w9bW9uZ29kYg%3D%3D"></a>
+											</div>
+
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												Riak
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/riak.png' %}" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9cmlhaw%3D%3D"> Riak是最为强大的分布式数据库之一，它提供了轻松且可预测的伸缩能力，向用户提供了快速测试、原型与应用部署能力，从而简化应用的开发过程。</a>
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9cmlhaw%3D%3D"></a>
+											</div>
+
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												Elastic
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/elastic.png' %}" alt="">
+												<a href="http://172.16.39.99:8000/scan/?q=es&s_type=ipv4"> Elasticsearch是一个基于lucene的、开源的、分布式的、RESTful的搜索引擎，其提供分布式的实时文件存储，并可对存储内容进行分布式实时检索。</a>
+
+												<a class="ico" href="http://172.16.39.99:8000/scan/?q=es&s_type=ipv4"></a>
+											</div>
+
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												Redis
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/redis.png' %}" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9cmVkaXM%3D">Redis是一个开源、高级的键值存储数据库。由于在键中使用了hash、set、string、sorted set及list，因此Redis也称作数据结构服务器。 Redis通过内存中的数据集实现了高性能。此外，其还兼容于大多数编程语言。</a>
+
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9cmVkaXM%3D"></a>
+											</div>
+
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												Memcached
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/memcached.png' %}" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9bWVtY2FjaGU%3D">Memcached是一个分布式的键值存储系统， 它是持久化的存储引擎，用于数据存储并以非常快速且可靠的方式检索数据。它遵循memcache协议。支持诸如复制与事务等特性。</a>
+
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9bWVtY2FjaGU%3D"></a>
+											</div>
+
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												Cassandra
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/cassandra.png' %}" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9Y2Fzc2FuZHJh">Cassandra是Apache软件基金会的项目，它是一个分布式数据库，支持分散的数据存储，可以实现容错以及无单点故障等。</a>
+
+												<a class="ico" ref="/result?qbase64=cHJvdG9jb2w9Y2Fzc2FuZHJh"></a>
+											</div>
+
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												CouchDB
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/couchdb.png' %}" alt="">
+												<a href="/result?qbase64=aGVhZGVyPWNvdWNoZGIgJiYgKGJvZHk9IlwiZXJyb3JcIjpcInVuYXV0aG9y%0AaXplZFwiIiB8fCBib2R5PSJcImNvdWNoZGJcIjpcIndlbGNvbWVcIiIp"> CouchDB是另一个面向文档的数据库，以JSON格式存储数据。可以用于存储网站的数据与内容，以及提供缓存等。它还提供了一个非常方便的基于Web的管理控制台，非常适合于Web应用。</a>
+
+												<a class="ico" href="/result?qbase64=aGVhZGVyPWNvdWNoZGIgJiYgKGJvZHk9IlwiZXJyb3JcIjpcInVuYXV0aG9y%0AaXplZFwiIiB8fCBib2R5PSJcImNvdWNoZGJcIjpcIndlbGNvbWVcIiIp"></a>
+											</div>
+
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												ORACLE
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/oracle.png' %}" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9b3JhY2xl">ORACLE数据库系统是美国ORACLE公司提供的以分布式数据库为核心的一组软件产品，是目前最流行的客户/服务器或B/S体系结构的数据库之一。</a>
+
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9b3JhY2xl"></a>
+											</div>
+
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												Microsoft SQL Server
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/sqlserver.png' %}" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9bXNzcWw%3D"> Microsoft SQL Server是由美国微软公司推出的关系型数据库。具有使用方便可伸缩性好与相关软件集成程度高等优点</a>
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9bXNzcWw%3D"></a>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												SYBASE
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/sybase.png' %}" alt="">
+												<a href="/result?qbase64=KGhlYWRlcj1BZGFwdGl2ZVNlcnZlckFueXdoZXJlIHx8IGhlYWRlcj1TUUxB%0Abnl3aGVyZSB8fCBiYW5uZXI9QWRhcHRpdmVTZXJ2ZXJBbnl3aGVyZSB8fCBi%0AYW5uZXI9U1FMQW55d2hlcmUp"> SYBASE是美国Sybase公司研制的一种关系型数据库系统，是一种典型的UNIX或WindowsNT平台上客户机/服务器环境下的大型数据库系统。</a>
+
+												<a class="ico" href="/result?qbase64=KGhlYWRlcj1BZGFwdGl2ZVNlcnZlckFueXdoZXJlIHx8IGhlYWRlcj1TUUxB%0Abnl3aGVyZSB8fCBiYW5uZXI9QWRhcHRpdmVTZXJ2ZXJBbnl3aGVyZSB8fCBi%0AYW5uZXI9U1FMQW55d2hlcmUp"></a>
+											</div>
+
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												DB2
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/db2.png' %}" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9ZGIy"> DB2 是IBM推出的一种关系数据库管理系统， 主要应用于大型应用系统，具有较好的可伸缩性，可支持从大型机到单用户环境，应用于所有常见的服务器操作系统平台。</a>
+
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9ZGIy"></a>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												OrientDB
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/orientdb.png' %}" alt="">
+												<a href="/result?qbase64=YXBwPU9yaWVudERC"> OrientDB是兼具文档数据库的灵活性和图形数据库管理链接能力的可深层次扩展的文档-图形数据库管理系统。可选无模式、全模式或混合模式。</a>
+
+												<a class="ico" href="/result?qbase64=YXBwPU9yaWVudERC"></a>
+											</div>
+										</div>
+									</div>
+
+								</div>
+
+							</div>
+
+							<div class="zt_main" style="display: none;">
+
+								<div class="grid mar_t30">
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												CoDeSys
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/codesys.png' %}" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9Y29kZXN5cw%3D%3D">CoDeSys编程接口在全球范围内使用广泛，全球上百个设备制造商的自动化设备中都是用了该编程接口。</a>
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9Y29kZXN5cw%3D%3D"></a>
+											</div>
+
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												GE-SRTP
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/gesrtp.png' %}" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9Z2VzcnRw">GE-SRTP协议由美国通用电气公司开发，GE PLC可以通过GE-SRTP进行数据通信和数据传输。</a>
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9Z2VzcnRw"></a>
+											</div>
+
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												SIEMENS
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/siemens.png' %}" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9czc%3D">s7协议是SIEMENS s7协议族的标准通信协议，使用s7-应用接口的通信不依赖特定的总线系统。</a>
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9czc%3D"></a>
+											</div>
+
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												omron
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/omron.png' %}" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9b21yb24%3D">欧姆龙PLC使用网络协议FINS进行通信，可通过多种不同的物理网络，如以太网、控制器连接等。</a>
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9b21yb24%3D"></a>
+											</div>
+
+										</div>
+									</div>
+
+									<!--<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">-->
+									<!--<div class="panel panel-default">-->
+									<!--<div class="gzmod_t">redlion</div>-->
+									<!--<div class="gzmod_c"><img src="C:/Users/Test11/Desktop/select/imgs/fofa/redlion.png" alt=""/>-->
+									<!--<a href=/result?qbase64=cHJvdG9jb2w9cmVkbGlvbg%3D%3D >红狮控制系统制造公司位于美国的宾夕法尼亚州，可制造从定时器到精密复杂人机界面的多种工业控制产品</a>-->
+									<!--<a class="ico" href=/result?qbase64=cHJvdG9jb2w9cmVkbGlvbg%3D%3D></a>-->
+									<!--</div>-->
+
+									<!--</div>-->
+									<!--</div>-->
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												Modbus
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/modbus.png' %}" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9bW9kYnVz"> Modbus协议是应用于电子控制器上的一种协议。通过此协议设备间可以通信。它已成为一通用工业标准。</a>
+
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9bW9kYnVz"></a>
+											</div>
+
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												fox
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/fox.png' %}" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9Zm94">Fox协议是Tridium公司开发的Niagara框架的一部分，广泛应用于楼宇自动化控制系统。</a>
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9Zm94"></a>
+											</div>
+
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												EtherNet/IP
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/ethernetip.png' %}" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9ZXRoZXJuZXRpcA%3D%3D">Ethernet/IP是一个面向工业自动化应用的工业应用层协议。它建立在标准UDP/IP与TCP/IP协议之上，利用固定的以太网硬件和软件，为配置、访问和控制工业自动化设备定义了一个应用层协议。</a>
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9ZXRoZXJuZXRpcA%3D%3D"></a>
+											</div>
+
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												dnp
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/dnp.png' %}" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9ZG5wMw%3D%3D">DNP(Distributed Network Protocol，分布式网络规约)是一种应用于自动化组件之间的通讯协议，常见于电力、水处理等行业。SCADA可&gt;
+												以使用DNP协议与主站、RTU、及IED进行通讯。</a>
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9ZG5wMw%3D%3D"></a>
+											</div>
+
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												BACnet
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/bacnet.png' %}" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9YmFjbmV0">楼宇自动控制网络数据通讯协议(BACnet)是针对采暖、通风、空调、制冷控制设备所设计，同时也为其他楼宇控制系统（例如照明、安保、消防等系统）的集成提供一个基本原则。</a>
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9YmFjbmV0"></a>
+											</div>
+
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												MELSEC-Q
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/melsecqi.png' %}" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9bWVsc2VjcQ%3D%3D">MELSEC-Q系列设备使用专用的网络协议进行通讯，该系列设备可以提供高速、大容量的数据处理和机器控制。</a>
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9bWVsc2VjcQ%3D%3D"></a>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												HART-IP
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/hartip.png' %}" alt="">
+												<a href="/result?qbase64=cG9ydD01MDk0ICYmIHByb3RvY29sPWhhcnQ%3D">HART协议是美国Rosement公司于1985年推出的一种用于现场智能仪表和控制室设备之间的通信协议。现已成为全球智能仪表的工业标准
+												。</a>
+												<a class="ico" href="/result?qbase64=cG9ydD01MDk0ICYmIHByb3RvY29sPWhhcnQ%3D"></a>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												PCWorx
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/pcworx.png' %}" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9cGN3b3J4">PCWorx协议由菲尼克斯电气公司开发，目前广泛使用于工控系统。PCWORX3.11是菲尼克斯电气公司的专用协议。</a>
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9cGN3b3J4"></a>
+											</div>
+
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												ProConOS
+											</div>
+											<div class="gzmod_c">
+												<a href="/result?qbase64=cHJvdG9jb2w9cHJvY29ub3M%3D">ProConOS是德国科维公司(KW-Software GmbH)开发的用于PLC的实时操作系统，它是一个高性能的PLC运行时引擎，目前广泛使用于基于嵌入式和PC的工控系统。</a>
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9cHJvY29ub3M%3D"></a>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												redlion
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/redline.png' %}" style="width: 150px" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9cmVkbGlvbg%3D%3D">协议被Crimson桌面软件用于与Red Lion G306工控系统的HMI人机接口。</a>
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9cmVkbGlvbg%3D%3D"></a>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												IEC 60870-5-104
+											</div>
+											<div class="gzmod_c">
+												<a href="/result?qbase64=cHJvdG9jb2w9aWVj">IEC 60870-5-104是国际电工委员会制定的一个规范，用于适应和引导电力系统调度自动化的发展，规范调度自动化及远动设备的技术性能。</a>
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9aWVj"></a>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												vertx-edge
+											</div>
+											<div class="gzmod_c">
+												<a href="/result?qbase64=cHJvdG9jb2w9dmVydHg%3D"> vertx-edge。</a>
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9dmVydHg%3D"></a>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												moxa-nport
+											</div>
+											<div class="gzmod_c"><img src="{% static 'imgs/fofa/moxa.gif' %}" style="width: 150px" alt="">
+												<a href="/result?qbase64=cHJvdG9jb2w9bW94YQ%3D%3D"> Moxa 串口服务器专为工业应用而设计。不通配置组合的串口服务器更能符合不同工业现场的需求。NPort系列串口服务器让传统 RS-232/422/485设备立即联网，提供您基于IP的串口联网解决方案。</a>
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9bW94YQ%3D%3D"></a>
+											</div>
+										</div>
+									</div>
+
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												lantronix-udp
+											</div>
+											<div class="gzmod_c">
+												<a href="/result?qbase64=cHJvdG9jb2w9bGFudHJvbml4"> lantronix-udp。</a>
+												<a class="ico" href="/result?qbase64=cHJvdG9jb2w9bGFudHJvbml4"></a>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="bottom">
+
+			<div class="container">
+
+				<div class="bootomline">
+					{{ hello }}select
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+</html>

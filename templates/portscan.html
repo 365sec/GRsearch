@@ -1,0 +1,575 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml">
+	{% load staticfiles %}
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=emulateIE7"/>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<title>365sec</title>
+		<link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css"/>
+		<link href="{% static 'css/result.css' %}" rel="stylesheet" type="text/css"/>
+		<link href="{% static 'css/main.c73173fb.css' %}" rel="stylesheet">
+		<script src="{% static 'js/map/echarts.min.js' %}"></script>
+		<script src="http://gallery.echartsjs.com/dep/echarts/map/js/world.js"></script> 
+	</head>
+	<body onload="load()">
+		<div id="container">
+			<div id="hd" class="ue-clear">
+				<a href="/"> <div class="logo"></div> </a>
+				<div class="inputArea">
+					<input type="text" class="searchInput" id="search_content" value="{{ search_content }}"/>
+					<input type="button" class="searchButton" value="搜索" onclick="add_search()"/>
+				</div>
+			</div>
+			<div class="nav">
+				<ul class="searchList">
+					<li class="searchItem {% ifequal s_type 'webscan' %}current{% endifequal %}" data-type="webscan">
+						webscan
+					</li>
+					<li class="searchItem {% ifequal s_type 'portscan' %}current{% endifequal %}" data-type="portscan">
+						portscan
+					</li>
+					<li class="searchItem {% ifequal s_type 'ipv4' %}current{% endifequal %}" data-type="ipv4">
+						ipv4
+					</li>
+					<li class="searchItem {% ifequal s_type 'waf' %}current{% endifequal %}" data-type="waf">
+						waf
+					</li>
+				</ul>
+			</div>
+			<div id="bd" class="ue-clear">
+				<div id="main">
+					<div class="sideBar" id="sideBar">
+						<div id="worldmap" style="width: 260px;height:200px;margin:0 auto"></div>
+						<div id="sideBarcontent"></div>
+					</div>
+					<div class="historyArea">
+						<div class="hotSearch">
+							<h6>热门搜索</h6>
+							<ul class="historyList">
+
+								<li>
+									<a href="/search?q=xss" style="font-size:15px;">xss</a>
+								</li>
+
+							</ul>
+						</div>
+						<div class="mySearch">
+							<h6>我的搜索</h6>
+							<ul class="historyList">
+
+							</ul>
+						</div>
+					</div>
+					<div class="resultArea">
+						<p class="resultTotal">
+							<span class="info">&nbsp;<span class="totalResult">{{ total_nums }}</span>&nbsp;条结果(用时<span
+								class="time">{{ time_took }}</span>秒)，共约<span
+								class="totalPage">{{ page_nums }}</span>页</span>
+						</p>
+						<div class="resultList" id="result_list">
+							{% for hit in all_hits %}
+							<div class="resultItem">
+								<div class="itemHead">
+									<a href="{{ hit.url }}" target="_blank" class="title"> {% autoescape off %}{{ hit.ip }}{% endautoescape %}</a>
+									<span class="divsion">-</span>
+									<span class="fileType"> <span class="label">服务：</span> <span class="value">{{ hit.tags }}</span> </span>
+								</div>
+								<div class="itemBody">
+									<span class="fileType"> <span class="label">国家：</span> <span class="flag flag-{{ hit.country_code |lower }}"></span><span class="value">{{ hit.country }}</span> </span>
+									<span class="dependValue"> <span class="label">城市：</span> <span class="value">{{ hit.city }}
+											<br />
+										</span> </span>
+									<a href="http://172.16.39.99:8000/portscan_detail/?q={{ hit.id }}" target="_blank">详情</a>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+						<!-- 分页 -->
+
+						{# <div class="pagination ue-clear"></div>#}
+
+						<div class="pagination ue-clear" id="page_list">
+							{% ifnotequal page 1 %}
+							<a href="javascript:select({{ last_page }})">&nbsp;&lt;&nbsp;</a>
+							{% endifnotequal %}
+							{% for p in page_list %}
+							{% if p %}
+							{% ifequal page p %}
+							<a style="color:#023054;border-color:#8EB2D2;background:#B8DFFB;">{{ p }}</a>
+							{% else %}
+							{% ifequal p current_page%}
+							<strong><span>{{ p }}</span></strong>
+							{% endifequal %}
+							{% ifnotequal p current_page  %}
+							<a href="javascript:select({{ p }})" class="page">{{ p }}</a>
+							{% endifnotequal %}
+							{% endifequal %}
+							{% endif %}
+							{% endfor %}
+							{% ifnotequal page page_nums %}
+							<a href="javascript:select({{ next_page }})">&nbsp;>&nbsp;</a>
+							{% endifnotequal %}
+						</div>
+					</div>
+				</div><!-- End of main -->
+			</div><!--End of bd-->
+		</div>
+
+	</body>
+	<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/global.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/pagination.js' %}"></script>
+	<script type="text/javascript">
+		var search_url = "{% url 'scan' %}"
+
+		$('.searchList').on('click', '.searchItem', function() {
+			$('.searchList .searchItem').removeClass('current');
+			$(this).addClass('current');
+		});
+
+		$.each($('.subfieldContext'), function(i, item) {
+			$(this).find('li:gt(10)').hide().end().find('li:last').show();
+		});
+
+		function removeByValue(arr, val) {
+			for (var i = 0; i < arr.length; i++) {
+				if (arr[i] == val) {
+					arr.splice(i, 1);
+					break;
+				}
+			}
+		}
+
+
+		$('.subfieldContext .more').click(function(e) {
+			var $more = $(this).parent('.subfieldContext').find('.more');
+			if ($more.hasClass('show')) {
+
+				if ($(this).hasClass('define')) {
+					$(this).parent('.subfieldContext').find('.more').removeClass('show').find('.text').text('自定义');
+				} else {
+					$(this).parent('.subfieldContext').find('.more').removeClass('show').find('.text').text('更多');
+				}
+				$(this).parent('.subfieldContext').find('li:gt(2)').hide().end().find('li:last').show();
+			} else {
+				$(this).parent('.subfieldContext').find('.more').addClass('show').find('.text').text('收起');
+				$(this).parent('.subfieldContext').find('li:gt(2)').show();
+			}
+
+		});
+
+		$('.sideBarShowHide a').click(function(e) {
+			if ($('#main').hasClass('sideBarHide')) {
+				$('#main').removeClass('sideBarHide');
+				$('#container').removeClass('sideBarHide');
+			} else {
+				$('#main').addClass('sideBarHide');
+				$('#container').addClass('sideBarHide');
+			}
+
+		});
+
+		setHeight();
+		$(window).resize(function() {
+			setHeight();
+		});
+
+		function setHeight() {
+			if ($('#container').outerHeight() < $(window).height()) {
+				$('#container').height($(window).height() - 33);
+			}
+		}
+	</script>
+	<script type="text/javascript">
+		$('.searchList').on('click', '.searchItem', function() {
+			$('.searchList .searchItem').removeClass('current');
+			$(this).addClass('current');
+		});
+
+		// 联想下拉显示隐藏
+		$('.searchInput').on('focus', function() {
+			$('.dataList').show()
+		});
+
+		// 联想下拉点击
+		$('.dataList').on('click', 'li', function() {
+			var text = $(this).text();
+			$('.searchInput').val(text);
+			$('.dataList').hide()
+		});
+
+		hideElement($('.dataList'), $('.searchInput'));
+	</script>
+	<script>
+		var searchArr;
+		//定义一个search的，判断浏览器有无数据存储（搜索历史）
+		if (localStorage.search) {
+			//如果有，转换成 数组的形式存放到searchArr的数组里（localStorage以字符串的形式存储，所以要把它转换成数组的形式）
+			searchArr = localStorage.search.split(",")
+		} else {
+			//如果没有，则定义searchArr为一个空的数组
+			searchArr = [];
+		}
+		//把存储的数据显示出来作为搜索历史
+		MapSearchArr();
+
+		function add_search() {
+			var val = $(".searchInput").val();
+			if (val.length >= 2) {
+				//点击搜索按钮时，去重
+				KillRepeat(val);
+				//去重后把数组存储到浏览器localStorage
+				localStorage.search = searchArr;
+				//然后再把搜索内容显示出来
+				MapSearchArr();
+			}
+			window.location.href = search_url + '?q=' + val + "&s_type=" + $(".searchItem.current").attr('data-type')
+		}
+
+
+		$('.searchInput').keyup(function(e) {
+			if (e.keyCode == 13) {//模拟点击搜索按钮，触发上面的 Click 事件
+				add_search();
+			}
+		});
+
+		function MapSearchArr() {
+			var tmpHtml = "";
+			var arrLen = 0
+			if (searchArr.length > 6) {
+				arrLen = 6
+			} else {
+				arrLen = searchArr.length
+			}
+			for (var i = 0; i < arrLen; i++) {
+				tmpHtml += '<li><a href="/scan?q=' + searchArr[i] + '&s_type={{ s_type }}" style="font-size:15px;">' + searchArr[i] + '</a></li>'
+			}
+			$(".mySearch .historyList").append(tmpHtml);
+		}
+
+		//去重
+		function KillRepeat(val) {
+			var kill = 0;
+			for (var i = 0; i < searchArr.length; i++) {
+				if (val === searchArr[i]) {
+					kill++;
+				}
+			}
+			if (kill < 1) {
+				searchArr.unshift(val);
+			} else {
+				removeByValue(searchArr, val)
+				searchArr.unshift(val)
+			}
+		}
+	</script>
+	<script>
+		function load() {
+			var aggs_search_content = document.getElementById("search_content").value;
+			$.ajax({
+				url : "/portscan_aggs/?q={{search_content}}",
+				type : 'GET',
+				success : function(result) {
+					var json_result = JSON.parse(result);
+					var country_list = json_result.country_list;
+					var map_list = json_result.map_list;
+					var province_list = json_result.province_list;
+					var city_list = json_result.city_list;
+					var myChart = echarts.init(document.getElementById('worldmap'));
+					option = {
+						tooltip : {
+							trigger : 'item',
+							formatter: '{b}:{c}'
+						},
+						series : [{
+							name : '数据分布',
+							type : 'map',
+							mapType : 'world',
+							roam : true,
+							selectedMode : 'single',
+							itemStyle : {
+								emphasis : {
+									label : {
+										show : true
+									}
+								}
+							},
+							nameMap : {
+								'Afghanistan' : '阿富汗',
+								'Angola' : '安哥拉',
+								'Albania' : '阿尔巴尼亚',
+								'United Arab Emirates' : '阿联酋',
+								'Argentina' : '阿根廷',
+								'Armenia' : '亚美尼亚',
+								'French Southern and Antarctic Lands' : '法属南半球和南极领地',
+								'Australia' : '澳大利亚',
+								'Austria' : '奥地利',
+								'Azerbaijan' : '阿塞拜疆',
+								'Burundi' : '布隆迪',
+								'Belgium' : '比利时',
+								'Benin' : '贝宁',
+								'Burkina Faso' : '布基纳法索',
+								'Bangladesh' : '孟加拉国',
+								'Bulgaria' : '保加利亚',
+								'The Bahamas' : '巴哈马',
+								'Bosnia and Herzegovina' : '波斯尼亚和黑塞哥维那',
+								'Belarus' : '白俄罗斯',
+								'Belize' : '伯利兹',
+								'Bermuda' : '百慕大',
+								'Bolivia' : '玻利维亚',
+								'Brazil' : '巴西',
+								'Brunei' : '文莱',
+								'Bhutan' : '不丹',
+								'Botswana' : '博茨瓦纳',
+								'Central African Republic' : '中非共和国',
+								'Canada' : '加拿大',
+								'Switzerland' : '瑞士',
+								'Chile' : '智利',
+								'China' : '中国',
+								'Ivory Coast' : '象牙海岸',
+								'Cameroon' : '喀麦隆',
+								'Democratic Republic of the Congo' : '刚果民主共和国',
+								'Republic of the Congo' : '刚果共和国',
+								'Colombia' : '哥伦比亚',
+								'Costa Rica' : '哥斯达黎加',
+								'Cuba' : '古巴',
+								'Northern Cyprus' : '北塞浦路斯',
+								'Cyprus' : '塞浦路斯',
+								'Czech Republic' : '捷克共和国',
+								'Germany' : '德国',
+								'Djibouti' : '吉布提',
+								'Denmark' : '丹麦',
+								'Dominican Republic' : '多明尼加共和国',
+								'Algeria' : '阿尔及利亚',
+								'Ecuador' : '厄瓜多尔',
+								'Egypt' : '埃及',
+								'Eritrea' : '厄立特里亚',
+								'Spain' : '西班牙',
+								'Estonia' : '爱沙尼亚',
+								'Ethiopia' : '埃塞俄比亚',
+								'Finland' : '芬兰',
+								'Fiji' : '斐',
+								'Falkland Islands' : '福克兰群岛',
+								'France' : '法国',
+								'Gabon' : '加蓬',
+								'United Kingdom' : '英国',
+								'Georgia' : '格鲁吉亚',
+								'Ghana' : '加纳',
+								'Guinea' : '几内亚',
+								'Gambia' : '冈比亚',
+								'Guinea Bissau' : '几内亚比绍',
+								'Equatorial Guinea' : '赤道几内亚',
+								'Greece' : '希腊',
+								'Greenland' : '格陵兰',
+								'Guatemala' : '危地马拉',
+								'French Guiana' : '法属圭亚那',
+								'Guyana' : '圭亚那',
+								'Honduras' : '洪都拉斯',
+								'Croatia' : '克罗地亚',
+								'Haiti' : '海地',
+								'Hungary' : '匈牙利',
+								'Indonesia' : '印尼',
+								'India' : '印度',
+								'Ireland' : '爱尔兰',
+								'Iran' : '伊朗',
+								'Iraq' : '伊拉克',
+								'Iceland' : '冰岛',
+								'Israel' : '以色列',
+								'Italy' : '意大利',
+								'Jamaica' : '牙买加',
+								'Jordan' : '约旦',
+								'Japan' : '日本',
+								'Kazakhstan' : '哈萨克斯坦',
+								'Kenya' : '肯尼亚',
+								'Kyrgyzstan' : '吉尔吉斯斯坦',
+								'Cambodia' : '柬埔寨',
+								'South Korea' : '韩国',
+								'Kosovo' : '科索沃',
+								'Kuwait' : '科威特',
+								'Laos' : '老挝',
+								'Lebanon' : '黎巴嫩',
+								'Liberia' : '利比里亚',
+								'Libya' : '利比亚',
+								'Sri Lanka' : '斯里兰卡',
+								'Lesotho' : '莱索托',
+								'Lithuania' : '立陶宛',
+								'Luxembourg' : '卢森堡',
+								'Latvia' : '拉脱维亚',
+								'Morocco' : '摩洛哥',
+								'Moldova' : '摩尔多瓦',
+								'Madagascar' : '马达加斯加',
+								'Mexico' : '墨西哥',
+								'Macedonia' : '马其顿',
+								'Mali' : '马里',
+								'Myanmar' : '缅甸',
+								'Montenegro' : '黑山',
+								'Mongolia' : '蒙古',
+								'Mozambique' : '莫桑比克',
+								'Mauritania' : '毛里塔尼亚',
+								'Malawi' : '马拉维',
+								'Malaysia' : '马来西亚',
+								'Namibia' : '纳米比亚',
+								'New Caledonia' : '新喀里多尼亚',
+								'Niger' : '尼日尔',
+								'Nigeria' : '尼日利亚',
+								'Nicaragua' : '尼加拉瓜',
+								'Netherlands' : '荷兰',
+								'Norway' : '挪威',
+								'Nepal' : '尼泊尔',
+								'New Zealand' : '新西兰',
+								'Oman' : '阿曼',
+								'Pakistan' : '巴基斯坦',
+								'Panama' : '巴拿马',
+								'Peru' : '秘鲁',
+								'Philippines' : '菲律宾',
+								'Papua New Guinea' : '巴布亚新几内亚',
+								'Poland' : '波兰',
+								'Puerto Rico' : '波多黎各',
+								'North Korea' : '北朝鲜',
+								'Portugal' : '葡萄牙',
+								'Paraguay' : '巴拉圭',
+								'Qatar' : '卡塔尔',
+								'Romania' : '罗马尼亚',
+								'Russia' : '俄罗斯',
+								'Rwanda' : '卢旺达',
+								'Western Sahara' : '西撒哈拉',
+								'Saudi Arabia' : '沙特阿拉伯',
+								'Sudan' : '苏丹',
+								'South Sudan' : '南苏丹',
+								'Senegal' : '塞内加尔',
+								'Solomon Islands' : '所罗门群岛',
+								'Sierra Leone' : '塞拉利昂',
+								'El Salvador' : '萨尔瓦多',
+								'Somaliland' : '索马里兰',
+								'Somalia' : '索马里',
+								'Republic of Serbia' : '塞尔维亚共和国',
+								'Suriname' : '苏里南',
+								'Slovakia' : '斯洛伐克',
+								'Slovenia' : '斯洛文尼亚',
+								'Sweden' : '瑞典',
+								'Swaziland' : '斯威士兰',
+								'Syria' : '叙利亚',
+								'Chad' : '乍得',
+								'Togo' : '多哥',
+								'Thailand' : '泰国',
+								'Tajikistan' : '塔吉克斯坦',
+								'Turkmenistan' : '土库曼斯坦',
+								'East Timor' : '东帝汶',
+								'Trinidad and Tobago' : '特里尼达和多巴哥',
+								'Tunisia' : '突尼斯',
+								'Turkey' : '土耳其',
+								'United Republic of Tanzania' : '坦桑尼亚联合共和国',
+								'Uganda' : '乌干达',
+								'Ukraine' : '乌克兰',
+								'Uruguay' : '乌拉圭',
+								'United States of America' : '美国',
+								'Uzbekistan' : '乌兹别克斯坦',
+								'Venezuela' : '委内瑞拉',
+								'Vietnam' : '越南',
+								'Vanuatu' : '瓦努阿图',
+								'West Bank' : '西岸',
+								'Yemen' : '也门',
+								'South Africa' : '南非',
+								'Zambia' : '赞比亚',
+								'Zimbabwe' : '津巴布韦'
+							},
+							data : map_list
+						}]
+					};
+					myChart.setOption(option);
+					var htmldata = "<div class=\"subfield\">统计</div><ul class=\"subfieldContext\"><li><span class=\"name\"><font size=\"2\">国家</font> </span></li>";
+					var country_data = "";
+					if (country_list) {
+						for (var i = 0; i < country_list.length; i++) {
+							var country_detail = "<li><span class=\"unit\"><a href=\"http://172.16.39.99:8000/scan/?q={{ search_content }}&s_type={{ s_type }}&filter=country:" + country_list[i].country_name + "\">";
+							country_detail += country_list[i].name + "</a></span><span class=\"unit\" style=\"float: right;\">";
+							country_detail += country_list[i].value + "</span></li>";
+							country_data += country_detail;
+						}
+					}
+					htmldata += country_data + "</ul>";
+					var province_data = "<ul class=\"subfieldContext\"><li><span class=\"name\"><font size=\"2\">省份/区域</font></span></li>";
+					if (province_list) {
+						for (var i = 0; i < province_list.length; i++) {
+							var province_detail = "<li><span class=\"unit\"><a href=\"http://172.16.39.99:8000/scan/?q={{ search_content }}&s_type={{ s_type }}&filter=province:" + province_list[i].province_name + "\">";
+							province_detail += province_list[i].province_name + "</a></span><span class=\"unit\" style=\"float: right;\">";
+							province_detail += province_list[i].count + "</span></li>";
+							province_data += province_detail;
+						}
+					}
+					htmldata += province_data + "</ul>";
+					var city_data = "<ul class=\"subfieldContext\"><li><span class=\"name\"><font size=\"2\">城市</font></span></li>";
+					if (city_list) {
+						for (var i = 0; i < city_list.length; i++) {
+							var city_detail = "<li><span class=\"unit\"><a href=\"http://172.16.39.99:8000/scan/?q={{ search_content }}&s_type={{ s_type }}&filter=city:" + city_list[i].city_name + "\">";
+							city_detail += city_list[i].city_name + "</a></span><span class=\"unit\" style=\"float: right;\">";
+							city_detail += city_list[i].count + "</span></li>";
+							city_data += city_detail;
+						}
+					}
+					htmldata += city_data + "</ul>";
+					document.getElementById("sideBarcontent").innerHTML = htmldata;
+				},
+				error : function(data) {
+					alert(data);
+				}
+			});
+		}
+	</script>
+	<script>
+		function select(a) {
+			var page = document.getElementById("search_content").value;
+			$.ajax({
+				url : "/portscan_select/?q={{search_content}}&page=" + a,
+				type : 'GET',
+				success : function(result) {
+					var json_result = JSON.parse(result);
+					var result_list_data = "";
+					var hits = json_result.all_hits;
+					if (hits) {
+						for (var i = 0; i < hits.length; i++) {
+							var record = "<div class=\"resultItem\"><div class=\"itemHead\"><a href=\"http://";
+							record += hits[i].ip + ":9200/_cat/indices?v\" target=\"_blank\" class=\"title\">" + hits[i].ip + "</a><span class=\"divsion\">-</span>";
+							record += "<a href=\"http://" + hits[i].ip + ":9200/_cat/nodes?v&h=ip,disk.avail,heap.max,ram.max\" target=\"_blank\" class=\"title\">节点状态</a>";
+							record += "<span class=\"fileType\"> <span class=\"label\">国家：</span> <span class=\"value\">" + hits[i].country + "</span> </span></div>";
+							record += "<div class=\"itemBody\"><span class=\"fileType\"> <span class=\"label\">省份地区：</span> <span class=\"value\">" + hits[i].province + "</span> </span>";
+							record += "<span class=\"dependValue\"> <span class=\"label\">城市：</span> <span class=\"value\">" + hits[i].city + "<br /></span> </span>";
+							record += "<a href=\"http://172.16.39.99:8000/host/?q=" + hits[i].id + "\" target=\"_blank\">详情</a></div></div>";
+							result_list_data += record;
+						}
+					}
+					page_last = json_result.last_page;
+					page_next = json_result.next_page;
+					page_current = json_result.current_page;
+					page_list = json_result.page_list;
+					page_nums = json_result.page_nums;
+					var page_list_data = "<div class=\"pagination ue-clear\" id=\"page_list\">";
+					if (page_current != 1) {
+						page_list_data += "<a href=\"javascript:select(" + page_last + ")\">&nbsp;&lt;&nbsp;</a>";
+					}
+					if (page_list) {
+						for (var j = 0; j < page_list.length; j++) {
+							var page_detail = "";
+							if (page_list[j] == page_current) {
+								page_detail += "<strong><span>" + page_current + "</span></strong>";
+							} else {
+								page_detail += "<a href=\"javascript:select(" + page_list[j] + ")\">" + page_list[j] + "</a>";
+							}
+							page_list_data += page_detail;
+						}
+					}
+					if (page_current != page_nums) {
+						page_list_data += "<a href=\"javascript:select(" + page_next + ")\">&nbsp;>&nbsp;</a>";
+					}
+					document.getElementById("result_list").innerHTML = result_list_data;
+					document.getElementById("page_list").innerHTML = page_list_data;
+					alert(html_data);
+				},
+				error : function(data) {
+					alert(data);
+				}
+			});
+		}
+	</script>
+</html>

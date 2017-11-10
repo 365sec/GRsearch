@@ -1,0 +1,194 @@
+<html>
+	<head>
+		<style>
+			.box {
+				font-size: 14px
+			}
+			.box .f20 {
+				font-size: 20px
+			}
+			.uiTable TABLE {
+				border-collapse: collapse;
+			}
+			.uiTable-body {
+				overflow-y: scroll;
+				overflow-x: auto;
+			}
+			.uiTable-headers {
+				overflow-x: hidden;
+			}
+			.uiTable-body TD {
+				white-space: nowrap;
+			}
+			.uiTable-body .uiTable-header-row TH, .uiTable-body .uiTable-header-row TH DIV {
+				padding-top: 0;
+				padding-bottom: 0;
+			}
+			.uiTable-body .uiTable-header-cell > DIV {
+				height: 0;
+				overflow: hidden;
+			}
+			.uiTable-headercell-menu {
+				float: right;
+			}
+			.uiTable-tools {
+				padding: 3px 4px;
+				height: 14px;
+			}
+			.uiTable-header-row {
+				background: #ddd;
+				background: -moz-linear-gradient(top, #eee, #ccc);
+				background: -webkit-linear-gradient(top, #eee, #ccc);
+			}
+			.uiTable-headercell-text {
+				margin-right: 20px;
+			}
+			.uiTable-headercell-menu {
+				display: none;
+			}
+			.uiTable-header-row TH {
+				border-right: 1px solid #bbb;
+				padding: 0;
+				text-align: left;
+			}
+			.uiTable-header-row TH > DIV {
+				padding: 3px 4px;
+				border-right: 1px solid #eee;
+			}
+			.uiTable-headerEndCap > DIV {
+				width: 19px;
+			}
+			.uiTable-header-row .uiTable-sort {
+				background: #ccc;
+				background: -moz-linear-gradient(top, #bebebe, #ccc);
+				background: -webkit-linear-gradient(top, #bebebe, #ccc);
+			}
+			.uiTable-header-row TH.uiTable-sort > DIV {
+				border-right: 1px solid #ccc;
+			}
+			.uiTable-sort .uiTable-headercell-menu {
+				display: block;
+			}
+			.uiTable TABLE TD {
+				border-right: 1px solid transparent;
+				padding: 3px 4px;
+			}
+			.uiTable-body TABLE TR:nth-child(even) {
+				background: #f3f3f3;
+			}
+			.uiTable-body TABLE TR.selected {
+				color: white;
+				background: #6060f1;
+			}
+			.uiStructuredQuery-out {
+				min-height: 30px;
+			}
+			.uiStructuredQuery {
+				padding: 10px;
+			}
+			.uiApp-header {
+	background: #eee;
+	position: fixed;
+	width: 100%;
+	z-index: 9;
+}
+
+.uiApp-header H1 {
+	margin: -2px 0 -4px 0;
+	float: left;
+	padding-right: 25px;
+}
+
+.uiApp-headerMenu {
+	border-bottom: 1px solid #bbb;
+	padding: 0px 3px;
+	height: 22px;
+}
+
+.uiApp-headerMenu .active {
+	background: white;
+	border-bottom-color: white;
+}
+
+.uiApp-headerMenuItem {
+	border: 1px solid #bbb;
+	padding: 4px 8px 1px ;
+	margin: 2px 1px 0;
+	height: 14px;
+	cursor: pointer;
+}
+
+.uiApp-body {
+	padding: 51px 0px 0px 0px;
+}
+
+.uiApp-headerNewMenuItem {
+	color: blue;
+}
+		</style>
+		<script type="text/javascript">
+			//insert javascript code here.
+			function display() {
+				var content = JSON.parse(document.getElementById("hits").innerText);
+				var mapping = JSON.parse(document.getElementById("mapping").innerText);
+				var field_list = new Array();
+				var a = 0;
+				var field_data = "<table><tr class=\"uiTable-header-row\"><th class=\"uiTable-header-cell\"><div><div class=\"uiTable-headercell-text\">_index</div></div></th><th class=\"uiTable-header-cell\"><div><div class=\"uiTable-headercell-text\">_type</div></div></th><th class=\"uiTable-header-cell\"><div><div class=\"uiTable-headercell-text\">_id</div></div></th>";
+				for (var key in mapping) {
+					field_list[a] = key;
+					var data2 = "<th class=\"uiTable-header-cell\"><div><div class=\"uiTable-headercell-text\">" + key + "</div></div></th>";
+					field_data += data2;
+					a += 1;
+				}
+				data1 = "<table>"+field_data + "</tr>";
+				field_data += "<th class=\"uiTable-headerEndCap\"></th></tr></table>";
+				//拖拉框不一致问题待解决
+				for (var i = 0, l = content.length; i < l; i++) {
+					var data3 = "<tr class=\"uiTable-row\"><td class=\"uiTable-cell\"><div>" + content[i]["_index"] + "</div></td><td class=\"uiTable-cell\"><div>" + content[i]["_type"] + "</div></td><td class=\"uiTable-cell\"><div>" + content[i]["_id"] + "</div></td>";
+					for (var j = 0; j < a; j++) {
+						var data4 = "<td class=\"uiTable-cell\"><div>" + content[i]["_source"][field_list[j]] + "</div></td>";
+						data3 += data4;
+					}
+					data3 += "</tr>";
+					data1 += data3;
+				}
+				data1 = data1 + "</table></table>";
+				document.getElementById("div2").style.display = "block";
+				document.getElementById("div3").style.display = "block";
+				document.getElementById("div1").style.display = "none";
+				document.getElementById("div2").innerHTML = field_data;
+				document.getElementById("div3").innerHTML = data1;
+			}
+		</script>
+	</head>
+	<body onLoad="display()">
+		<div class = box>
+			<span class="f20">
+				<p>
+					索引：{{index}}，   类型：{{type}}，文档数：{{doc_count}}
+				</p> </span>
+		</div>
+		<div id="div1" style="display: block">
+			<dl id="hits" >
+				{{hits}}
+			</dl>
+		</div>
+		<div class="uiApp">
+		<div class="uiApp-body">
+		<div class="uiStructuredQuery">
+			<div class="uiStructuredQuery-out">
+				<div class="uiTable">
+					<div id="div2" class="uiTable-headers" style="display: none"></div>
+					<div id="div3"  class="uiTable-body" style="display: none"></div>
+				</div>
+			</div>
+		</div>
+		</div>
+		</div>
+		<div style="display: none">
+			<dl id="mapping" >
+				{{mapping}}
+			</dl>
+		</div>
+	</body>
+</html>

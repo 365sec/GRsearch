@@ -1,0 +1,180 @@
+<html lang="en">
+	{% load staticfiles %}
+	<head>
+		<title>{{ metainfo.ip }}</title>
+		<meta charset="utf-8">
+		<!-- <link rel="stylesheet" href="https://static.shodan.io/bootstrap/css/bootstrap.css">
+		<link rel="stylesheet" href="https://static.shodan.io/font-awesome-4.2.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://static.shodan.io/jquery/css/jquery-jvectormap-1.2.2.css">
+		<link rel="stylesheet" href="https://static.shodan.io/shodan/css/base-styles.css">
+		<link rel="stylesheet" href="https://static.shodan.io/shodan/css/shodan.css">
+		<link rel="stylesheet" href="https://static.shodan.io/mapbox/css/mapbox.css"> -->
+		<link rel="stylesheet" href="{% static 'css/host/bootstrap.css' %}">
+		<link rel="stylesheet" href="{% static 'css/host/font-awesome.min.css' %}">
+		<link rel="stylesheet" href="{% static 'css/host/jquery-jvectormap-1.2.2.css' %}">
+		<link rel="stylesheet" href="{% static 'css/host/base-styles.css' %}">
+		<link rel="stylesheet" href="{% static 'css/host/shodan.css' %}">
+		<link rel="stylesheet" href="{% static 'css/host/mapbox.css' %}">
+		<style>
+			.metric_content {
+				background-color: #7DBB4D;
+                color: black;
+                font-weight: bold;
+			}
+			.metric_title{
+				    margin: 0;
+                    font-family: inherit;
+                    font-weight: bold;
+                    color: inherit;
+                    text-rendering: optimizelegibility;
+			}
+		</style>
+	</head>
+	<body class="">
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div class="host">
+					<div class="row-fluid">
+						<div class="span6">
+							<div class="page-header">
+								<h2><i class="fa fa-globe"></i>{{ metainfo.ip }} </h2>
+								{% for hit in port_list %}
+								<span class="badge badge-inverse">{{ hit.protocol }} </span>
+								{% endfor %}
+							</div>
+							<table class="table">
+								<tbody>
+									<tr>
+										<td>城市</td>
+										<th>{{ metainfo.city }}</th>
+									</tr>
+									<tr>
+										<td>省份地区</td>
+										<th>{{ metainfo.province }}</th>
+									</tr>
+									<tr>
+										<td>国家</td>
+										<th>{{ metainfo.country }}</th>
+									</tr>
+									<tr>
+										<td>经度</td>
+										<th>{{ metainfo.longitude }}</th>
+									</tr>
+									<tr>
+										<td>维度</td>
+										<th>{{ metainfo.latitude}}</th>
+									</tr>
+									<tr>
+										<td>更新时间</td>
+										<th>{{ metainfo.update_time}}</th>
+									</tr>
+								</tbody>
+							</table>
+
+						</div>
+						<div class="span6">
+							<div class="page-header">
+								<h2><i class="fa fa-th-large"></i>Ports </h2>
+							</div>
+							<ul class="ports">
+								{% for hit in port_name_list %}
+								<li>
+									<a href="#{{ hit }}">{{ hit }}</a>
+								</li>
+								{% endfor %}
+							</ul>
+							<div style="clear:both"></div>
+							<div class="page-header">
+								<h2><i class="fa fa-th-list"></i>Services </h2>
+							</div>
+							<ul class="services">
+								{% for hit in port_list %}
+								{% ifequal hit.protocol 'http' %}
+								<li class="service service-long">
+									<a name="{{ hit.port}}"></a>
+									<div class="service-details">
+										<div class="port">
+											{{ hit.port }}
+										</div>
+										<div class="protocol">
+											{{ hit.protocol }}
+										</div><a href="http://{{ metainfo.ip }}:{{ hit.port }}" target="_blank" class="link"><i class="fa fa-mail-forward">&nbsp; </i></a>
+									</div>
+									<div class="service-main">
+										{% ifequal hit.port '9200' %}
+										<!-- <h3>调试用</h3>
+										<pre deep="8">{{ hit.cat_status}}</pre>
+										<pre deep="8">{{ hit.read_status}}</pre> -->
+										{% ifequal hit.cat_status 'yes' %}
+										{% ifequal hit.read_status 'success' %}
+										<h3>集群信息</h3>
+										<div><span class="metric_title">节点数量：{{ hit.num_of_nodes}}</div>
+										<div><span class="metric_title">集群磁盘可用：{{ hit.disk_available_all}}</div>
+										<div><span class="metric_title">集群规模：{{ hit.index_size_all}}</div>
+										<li><span class="metric_title">节点信息 </span>
+										<pre deep="8">{{ hit.nodes_info}}</pre>
+										<span class="metric_title">索引信息</span>
+										<pre deep="8">{{ hit.index_info}}</pre></li>
+										{% endifequal %}
+										{% endifequal %}
+										{% endifequal %}
+										<li><h3>headers</h3>
+										<pre deep="8">{{ hit.headers}}</pre>
+										<h3>body</h3>
+										<pre deep="8">{{ hit.body}}</pre></li>
+										<div class="clear"></div>
+									</div>
+								</li>
+								{% endifequal %}
+								{% ifequal hit.protocol 'mysql' %}
+								<li class="service service-long">
+									<a name="{{ hit.port}}"></a>
+									<div class="service-details">
+										<div class="port">
+											{{ hit.port }}
+										</div>
+										<div class="protocol">
+											{{ hit.protocol }}
+										</div>
+									</div>
+									<div class="service-main">
+										<h3>data</h3>
+										<pre deep="8">{{ hit.banner_data}}</pre>
+										<div class="clear"></div>
+									</div>
+								</li>
+								{% endifequal %}
+								{% ifnotequal hit.protocol 'http' %}
+								{% ifnotequal hit.protocol 'mysql' %}
+								<li class="service service-long">
+									<a name="{{ hit.port}}"></a>
+									<div class="service-details">
+										<div class="port">
+											{{ hit.port }}
+										</div>
+										<div class="protocol">
+											{{ hit.protocol }}
+										</div>
+									</div>
+									<div class="service-main">
+										<h3>data</h3>
+										<pre deep="8">{{ hit.banner_data}}</pre>
+										<div class="clear"></div>
+									</div>
+								</li>
+								{% endifnotequal %}
+								{% endifnotequal %}
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="footer muted">
+			<p>
+				ipv4扫描
+			</p>
+		</div>
+	</body>
+</html>
