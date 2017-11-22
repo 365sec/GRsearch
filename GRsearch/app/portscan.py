@@ -13,7 +13,7 @@ from django.shortcuts import render, HttpResponse
 from hbase import Hbase
 from hbase.ttypes import *
 
-client = Elasticsearch("172.16.39.233:9200")
+client = Elasticsearch(hosts=["172.16.39.231","172.16.39.232","172.16.39.233","172.16.39.234"],timeout=5000)
 
 def search(request):
     search_content = request.GET.get('q', '')   
@@ -2546,6 +2546,135 @@ def ipv4_with_content_with_filter(search_content, page, current_page, last_page,
                                              "s_type":s_type
                                               }
     return context  
+def waf_with_content(search_content, page, current_page, last_page, next_page, s_type, index_dict):
+    starttime = time.time()
+    response = client.search(
+                                index="liuren",
+                                doc_type="waf_log",
+                                body={
+                                     "from": (page - 1) * 10,
+                                     "size": 10,
+                                     "stored_fields": ["rowkey"],
+                                     "query": {
+                                        "match": {
+                                            "_all": search_content
+                                                 }
+                                         }
+                                      }
+                                )
+    total_nums = response["hits"]["total"]
+    page_nums = int(total_nums / 10) + 1 if (page % 10) > 0 else int(total_nums / 10)
+#     time_took = float(response["took"]) / 1000
+    hit_list = []
+    rowkey_list = []
+    for hit in response["hits"]["hits"]:
+        rowkey_list.append(hit["fields"]["rowkey"][0])
+    transport = TSocket.TSocket('172.16.39.231', 9090)
+    transport = TTransport.TBufferedTransport(transport)
+    protocol = TBinaryProtocol.TBinaryProtocol(transport)
+    hbase_client = Hbase.Client(protocol)
+    transport.open()
+    i = 0
+    all_hits = []
+    while i < len(rowkey_list):
+        result = hbase_client.getRow('waf_log', str(rowkey_list[i]))
+        hit = {}
+        for r in result:
+            for key in r.columns.keys():
+                reg = re.compile(r'\s*:\s*')
+                key_content_list = reg.split(key)   #hbase中key的内容是message:field的形式
+                hit[key_content_list[1]] = r.columns.get(key).value   #未做出错处理
+#         hit = json.dumps(hit,ensure_ascii=False)   加了这个内容，前端有些内容就无法生效，如hit.org_name取不到值
+        hit["es_id"] = rowkey_list[i]
+        all_hits.append(hit)
+        i +=1
+    page_list = [
+                                i for i in range(page - 4, page + 5) if 0 < i <= page_nums  # 分页页码列表
+                                 ]
+    endtime = time.time()
+    time_took = endtime - starttime
+    context = {
+                                             "all_hits":all_hits,
+                                             "search_content": search_content,
+                                             "total_nums":total_nums,
+                                             "time_took":time_took,
+                                             "page_nums":page_nums,
+                                             "current_page": current_page,
+                                             "last_page": last_page,
+                                             "next_page": next_page,
+                                             "page_list":page_list,
+                                             "s_type":s_type
+                                              }
+    return context 
+def waf_with_content_with_filter(search_content, page, current_page, last_page, next_page, s_type, index_dict, filter_field, filter_field_value):
+    starttime = time.time()
+    response = client.search(
+                                index="liuren",
+                                doc_type="waf_log",
+                                body={
+                                     "from": (page - 1) * 10,
+                                     "size": 10,
+                                     "stored_fields": ["rowkey"],
+                                     "query": {
+                                        "bool":{
+                                            "must":[{
+                                              "match": {
+                                                  "_all": search_content
+                                                 }
+                                                  }],
+                                            "filter":{
+                                                  "term":{
+                                                            filter_field : filter_field_value
+                                                               }
+                                                  }
+                                               }
+                                            }
+                                      }
+                                )
+    total_nums = response["hits"]["total"]
+    page_nums = int(total_nums / 10) + 1 if (page % 10) > 0 else int(total_nums / 10)
+#     time_took = float(response["took"]) / 1000
+    hit_list = []
+    rowkey_list = []
+    for hit in response["hits"]["hits"]:
+        rowkey_list.append(hit["fields"]["rowkey"][0])
+    transport = TSocket.TSocket('172.16.39.231', 9090)
+    transport = TTransport.TBufferedTransport(transport)
+    protocol = TBinaryProtocol.TBinaryProtocol(transport)
+    hbase_client = Hbase.Client(protocol)
+    transport.open()
+    i = 0
+    all_hits = []
+    while i < len(rowkey_list):
+        result = hbase_client.getRow('waf_log', str(rowkey_list[i]))
+        hit = {}
+        for r in result:
+            for key in r.columns.keys():
+                reg = re.compile(r'\s*:\s*')
+                key_content_list = reg.split(key)   #hbase中key的内容是message:field的形式
+                hit[key_content_list[1]] = r.columns.get(key).value   #未做出错处理
+#         hit = json.dumps(hit,ensure_ascii=False)   加了这个内容，前端有些内容就无法生效，如hit.org_name取不到值
+        hit["es_id"] = rowkey_list[i]
+        all_hits.append(hit)
+        i +=1
+    page_list = [
+                                i for i in range(page - 4, page + 5) if 0 < i <= page_nums  # 分页页码列表
+                                 ]
+    endtime = time.time()
+    time_took = endtime - starttime
+    context = {
+                                             "all_hits":all_hits,
+                                             "search_content": search_content,
+                                             "total_nums":total_nums,
+                                             "time_took":time_took,
+                                             "page_nums":page_nums,
+                                             "current_page": current_page,
+                                             "last_page": last_page,
+                                             "next_page": next_page,
+                                             "page_list":page_list,
+                                             "s_type":s_type
+                                              }
+    return context
 def aggs(request):
     search_content = request.GET.get('q', '')
     # search_content = request.POST

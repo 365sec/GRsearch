@@ -19,11 +19,13 @@ import sys
 sys.path.append("GRsearch/search1")
 import response
 sys.path.append("GRsearch/app")
-import view1,fenye,portscan,ipv4,host,portscan_detail
+import view1,fenye,portscan,ipv4,host,portscan_detail,waf_detail,tsgz,waf_suyuan,waf_suyuan_filter,waf_suyuan_detail
 sys.path.append("GRsearch/ajax_test")
-import ajax_test,portscan_ajax,ipv4_dashboard
+import ajax_test,portscan_ajax,ipv4_dashboard,waf_ajax,waf_dashboard,waf_map
 sys.path.append("GRsearch/select")
 import select1
+sys.path.append("GRsearch/main")
+import main
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -40,5 +42,16 @@ urlpatterns = [
     url(r'^portscan_aggs/$', portscan_ajax.portscan_aggs, name="portscan_aggs"),
     url(r'^portscan_select/$', portscan_ajax.portscan_select, name="portscan_select"),
     url(r'^portscan_detail/$', portscan_detail.search, name="portscan_detail"),
-    url(r'^select/$', select1.search,name="select")
+    url(r'^select/$', select1.search,name="select"),
+    url(r'^waf_ajax/$', waf_ajax.waf_aggs,name="waf_ajax"),
+    url(r'^waf_select/$', waf_ajax.select,name="waf_select"),
+    url(r'^waf_dashboard/$', waf_dashboard.waf_aggs,name="waf_dashboard"),
+    url(r'^waf/$', waf_detail.search, name="waf"),
+    url(r'^waf_map/$', waf_map.waf_aggs, name="waf_map"),
+    url(r'^tsgz/$', tsgz.tsgz, name="tsgz"),
+    url(r'^waf_suyuan/$', waf_suyuan.search, name="waf_suyuan"),
+    url(r'^waf_suyuan/waf_suyuan_filter/$', waf_suyuan_filter.search, name="waf_suyuan_filter"),
+    url(r'^waf_suyuan/waf_suyuan_detail/$', waf_suyuan_detail.detail, name="waf_suyuan_detail"),
+    url(r'^GRsearch/$', main.main, name="main"),
+    url(r'', main.main, name="main")
 ]

@@ -139,7 +139,15 @@ def search(request):
                 port_dict["banner_data"] = json.dumps(response["_source"][protocol.split('/')[0]]["mysql"]["banner"]["data"],indent=4)
             else :
                 port_dict["banner_data"] = ""
+            if response["_source"][protocol.split('/')[0]]["mysql"]["banner"].has_key("metadata") == True:
+                port_dict["metadata"] = json.dumps(response["_source"][protocol.split('/')[0]]["mysql"]["banner"]["metadata"],indent=4)
+            else :
+                port_dict["metadata"] = ""
         else:
+            if response["_source"][port_dict["port"]][port_dict["protocol"]]["banner"].has_key("metadata") == True:
+                port_dict["metadata"] = json.dumps(response["_source"][port_dict["port"]][port_dict["protocol"]]["banner"]["metadata"],indent=4)
+            else :
+                port_dict["metadata"] = ""
             port_dict["banner_data"] = json.dumps(response["_source"][protocol.split('/')[0]],indent=4)
         port_name_list.append(protocol.split('/')[0])
         port_list.append(port_dict)
