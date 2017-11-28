@@ -26,6 +26,8 @@ sys.path.append("GRsearch/select")
 import select1
 sys.path.append("GRsearch/main")
 import main
+sys.path.append("GRsearch/vul")
+import vul_report,vul_report_list
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -52,6 +54,10 @@ urlpatterns = [
     url(r'^waf_suyuan/$', waf_suyuan.search, name="waf_suyuan"),
     url(r'^waf_suyuan/waf_suyuan_filter/$', waf_suyuan_filter.search, name="waf_suyuan_filter"),
     url(r'^waf_suyuan/waf_suyuan_detail/$', waf_suyuan_detail.detail, name="waf_suyuan_detail"),
-    url(r'^GRsearch/$', main.main, name="main"),
+    url(r'^GRsearch$', main.main, name="main"),
+    url(r'^vul/report$', vul_report.vul_report, name="vul_report"),
+    url(r'^vul/report_list$', vul_report_list.vul_report_list, name="vul_report_list"),
+    url(r'^vul/select$', vul_report.vul_select, name="vul_select"),
     url(r'', main.main, name="main")
+    
 ]

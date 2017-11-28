@@ -1868,7 +1868,7 @@ def ipv4_with_content(search_content, page, current_page, last_page, next_page, 
                                      "from": (page - 1) * 20,
                                      "size": 20,
                                      "query": {
-                                        "match": {
+                                        "match_phrase": {
                                             "_all": search_content
                                                  }
                                          }

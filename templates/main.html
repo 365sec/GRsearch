@@ -20,6 +20,20 @@
 				margin-right: 15px;
 				margin-left: 15px;
 			}
+			.vul_txt {
+				position: absolute;
+				top: 65%;
+				left: 45%;
+				color: #28fefc;
+				font-size: 20px;
+				margin-top: 30px;
+				text-align: center;
+			}
+			.vul_txt a {
+				color: #ef0909;
+				margin-right: 15px;
+				margin-left: 15px;
+			}
 
 		</style>
 	</head>
@@ -34,7 +48,7 @@
 						</div>
 					</div>
 					<div class="search_txt">
-						<a href="#fofa-help-modal">漏洞报表</a><a href="/select/">规则专题</a>
+						<a href="/vul/report_list">漏洞报表</a><a href="/select/">规则专题</a>
 					</div>
 				</div>
 			</div>
@@ -55,7 +69,7 @@
 				//var search_content = document.getElementById("searchInput").value;
 				//alert("keydown");
 				//setInterval(search2(), 100);
-				search()
+				search();
 			    //window.location.href = search_url + '?q=' + search_content+'&s_type=ipv4';
 			}
 		}
@@ -64,6 +78,9 @@
 			var url = "http://172.16.39.99:8000/scan/" + '?q=' + search_content+'&s_type=ipv4';
 			alert(url);
 			self.location = url;
+		}
+		function vul_report(){
+			document.getElementById("vul_txt").style.display = "block";
 		}
 	</script>
 </html>

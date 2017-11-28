@@ -69,7 +69,7 @@
 							{% for hit in all_hits %}
 							<div class="resultItem">
 								<div class="itemHead">
-									<a href="{{ hit.url }}" target="_blank" class="title"> {% autoescape off %}{{ hit.ip }}{% endautoescape %}</a>
+									<a href="http://172.16.39.99:8000/portscan_detail/?q={{ hit.id }}" target="_blank" class="title"> {% autoescape off %}{{ hit.ip }}{% endautoescape %}</a>
 									<span class="divsion">-</span>
 									<span class="fileType"> <span class="label">服务：</span> <span class="value">{{ hit.tags }}</span> </span>
 								</div>

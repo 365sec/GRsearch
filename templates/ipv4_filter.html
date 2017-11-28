@@ -80,9 +80,8 @@
 							{% for hit in all_hits %}
 							<div class="resultItem">
 								<div class="itemHead">
-									<a href="http://{{ hit.ip }}:9200/_cat/indices?v" target="_blank" class="title"> {% autoescape off %}{{ hit.ip }}{% endautoescape %}</a>
+									<a href="http://172.16.39.99:8000/host/?q={{ hit.id }}" target="_blank" class="title"> {% autoescape off %}{{ hit.ip }}{% endautoescape %}</a>
 									<span class="divsion">-</span>
-									<a href="http://{{ hit.ip }}:9200/_cat/nodes?v&h=ip,disk.avail,heap.max,ram.max" target="_blank" class="title">节点状态</a>
 									<span class="fileType"> <span class="label">国家/地区：</span> <span class="flag flag-{{ hit.country_code |lower }}"></span><span class="value">{{ hit.country }}</span> </span>
 								</div>
 								<div class="itemBody">
@@ -90,7 +89,6 @@
 									<span class="dependValue"> <span class="label">城市：</span> <span class="value">{{ hit.city }}
 											<br />
 										</span> </span>
-									<a href="http://172.16.39.99:8000/host/?q={{ hit.id }}" target="_blank">详情</a>
 								</div>
 							</div>
 							{% endfor %}

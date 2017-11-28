@@ -1,0 +1,148 @@
+<!DOCTYPE html >
+<html>
+	{% load staticfiles %}
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>漏洞报告列表</title>
+		<meta name="csrf-param" content="authenticity_token">
+		<meta name="csrf-token" content="AjLwigFmMBHiHrySvr2mVhxroD7PY5kXC/55d4bKi2MIPKQ0hjMn0jiGKs/qPEbZe08p/RbI1BZFQ3GZx2iEcQ==">
+		<style type="text/css">
+			.turbolinks-progress-bar {
+				position: fixed;
+				display: block;
+				top: 0;
+				left: 0;
+				height: 3px;
+				background: #0076ff;
+				z-index: 9999;
+				transition: width 300ms ease-out, opacity 150ms 150ms ease-in;
+				transform: translate3d(0, 0, 0);
+			}
+		</style>
+
+		<script src="https://hm.baidu.com/hm.js?9490413c5eebdadf757c2be2c816aedf "></script>
+		<script>
+			//<![CDATA[
+
+			//]]>
+		</script>
+		<link rel="stylesheet" media="all" href="{% static 'assets/fofa/skin1/fofa-63590d352eb5653130e3f9f4d81a967da4c231f4688d6291f6cda7a86aa041cf.css' %}" data-turbolinks-track="reload">
+		<script src="{% static 'assets/fofa/fofa-d68d517bf641867705600d20bd610400f43bfcf590f485d2973a19e2e3100c84.js' %}" data-turbolinks-track="reload"></script>
+		<script type="text/javascript">
+			$(function() {
+
+				base.mod_close();
+
+				$(".close").click(function() {
+					$("body").css('background-size', '80% auto');
+
+				});
+
+				$("#but_zc").click(function() {
+					$("#mod_zc").show();
+					$(".mod_centerbg").show();
+
+				});
+
+				$("#but_dl").click(function() {
+					$("#mod_dl").show();
+					$(".mod_centerbg").show();
+
+				});
+
+				$(".input1").focus(function() {
+					$(".search").addClass("sea_act");
+				}).blur(function() {
+					$(".search").removeClass("sea_act");
+				});
+
+			});
+
+		</script>
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+				var hm = document.createElement("script");
+				hm.src = "https://hm.baidu.com/hm.js?9490413c5eebdadf757c2be2c816aedf ";
+				var s = document.getElementsByTagName("script")[0];
+				s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</head>
+
+	<body>
+		<div class="container">
+            <a href="/"><h2>GRsearch</h2></a>
+		</div>
+
+		<style type="text/css">
+			h2 {
+				color: #28fefc;
+			}
+			h3 {
+				color: #efefef;
+			}
+			.panel {
+				border: 0px solid transparent;
+				box-shadow: 0 0px 5px rgba(34,266,266,0.9);
+			}
+
+		</style>
+
+		<script type="text/javascript">
+			$(function() {
+				base.qh_title(".qt_qh a", ".zt_all .zt_main", "act");
+				$(".center_qh a").click(function() {
+					$(this).addClass("act").siblings().removeClass();
+
+				});
+			});
+
+		</script>
+		<div class="list_main">
+			<div class="container mar_t30">
+				<div class="row">
+					<div class="col-lg-12  list_r pad_r30 pad_l30 col_f" style="line-height:1.3em;">
+						<h2 class="gzh1">漏洞报表</h2>
+						<div class="zt_all">
+							<div class="zt_main" style="display: block;">
+								<div class="grid mar_t30">
+									{% for hit in vul_list%}
+									<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 grid-item">
+										<div class="panel panel-default">
+											<div class="gzmod_t">
+												{% autoescape off %}{{ hit.name }}{% endautoescape %}
+											</div>
+											<div class="gzmod_c">
+												<a href="/vul/report?vulnid={{ hit.vulnid }}">{% autoescape off %}{{ hit.detail }}{% endautoescape %}</a>
+												<a class="ico" href="/vul/report?vulnid={{ hit.vulnid }}"></a>
+											</div>
+										</div>
+									</div>
+									{% endfor %}
+
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="bottom">
+
+			<div class="container">
+
+				<div class="bootomline">
+					select
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+</html>
