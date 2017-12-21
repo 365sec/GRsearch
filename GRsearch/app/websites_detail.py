@@ -6,28 +6,21 @@ import re
 import urllib2
 from elasticsearch import Elasticsearch
 
-client = Elasticsearch("172.16.39.233:9200")
+client = Elasticsearch(hosts=["172.16.39.231","172.16.39.232","172.16.39.233","172.16.39.234"],timeout=5000)
 
 def search(request):
     _id = request.GET.get('q', '')
-    response = client.get(index="ipv4", id=_id, doc_type="ipv4host")
+    response = client.get(index="websites1", id=_id, doc_type="website")
     source = response["_source"]
     protocols = source["protocols"]  #这里对于是否存在没有多加判断
     metainfo = {}
-    metainfo["ip"] = source["ip"]
+    metainfo["domain"] = source["domain"]
     metainfo["update_time"] = source["updated_at"]
     metainfo["country"] = source["location"]["country"]
     metainfo["province"] = source["location"]["province"]
     metainfo["city"] = source["location"]["city"]
     metainfo["longitude"] = source["location"]["longitude"]
     metainfo["latitude"] = source["location"]["latitude"]
-    if metainfo["longitude"] != "" and metainfo["latitude"] !="":
-        url = "http://api.map.baidu.com/geocoder/v2/?output=json&ak=I1TIKYMImK2AzC9VBGS40oYQhZ12oIzY&location="+str(metainfo["latitude"])+","+str(metainfo["longitude"])
-        response = urllib2.urlopen(url)
-        if response.getcode() == 200 :
-            response_content = response.read()
-            json_content = json.loads(response_content)
-            metainfo["address"] = json_content["result"]["formatted_address"]
     port_list = []
     port_name_list = []
     for protocol in protocols:
@@ -152,14 +145,22 @@ def search(request):
             else :
                 port_dict["metadata"] = ""
         else:
-            if source[port_dict["port"]][port_dict["protocol"]]["banner"].has_key("metadata") == True:
-                port_dict["metadata"] = json.dumps(source[port_dict["port"]][port_dict["protocol"]]["banner"]["metadata"],indent=4)
+            if source[port_dict["port"]][port_dict["protocol"]]["get"].has_key("headers") == True:
+                port_dict["headers"] = json.dumps(source[port_dict["port"]][port_dict["protocol"]]["get"]["headers"],indent=4)
             else :
-                port_dict["metadata"] = ""
-            port_dict["banner_data"] = json.dumps(source[protocol.split('/')[0]],indent=4)
-        port_name_list.append(protocol.split('/')[0])
+                port_dict["headers"] = ""
+            if source[port_dict["port"]][port_dict["protocol"]]["get"].has_key("body") == True:
+                port_dict["body"] = json.dumps(source[port_dict["port"]][port_dict["protocol"]]["get"]["body"],indent=4)
+            else :
+                port_dict["body"] = ""
+            if source[port_dict["port"]][port_dict["protocol"]]["get"].has_key("title") == True:
+                port_dict["title"] = json.dumps(source[port_dict["port"]][port_dict["protocol"]]["get"]["title"],indent=4)
+            else :
+                port_dict["title"] = ""
+        if protocol.split('/')[0] not in port_name_list:
+            port_name_list.append(protocol.split('/')[0])
         port_list.append(port_dict)
-    return render(request,'host.html',{
+    return render(request,'websites_detail.html',{
                                        "port_name_list": port_name_list,
                                        "port_list": port_list,
                                        "metainfo": metainfo

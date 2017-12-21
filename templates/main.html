@@ -48,7 +48,7 @@
 						</div>
 					</div>
 					<div class="search_txt">
-						<a href="/vul/report_list">漏洞报表</a><a href="/select/">规则专题</a>
+						<a href="/vul/report_list">漏洞报表</a><a href="/select">规则专题</a>
 					</div>
 				</div>
 			</div>
@@ -75,7 +75,7 @@
 		}
 		function search2() {
 			var search_content = document.getElementById("searchInput").value;
-			var url = "http://172.16.39.99:8000/scan/" + '?q=' + search_content+'&s_type=ipv4';
+			var url = "http://172.16.39.99:8000/scan" + '?q=' + search_content+'&s_type=ipv4';
 			alert(url);
 			self.location = url;
 		}

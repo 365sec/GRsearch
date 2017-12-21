@@ -2,11 +2,11 @@
 html{*overflow:auto;}
 #hd{padding:20px 10px;}
 #bd{margin-bottom:40px;}
-.logo{float:left;margin-right:30px; height:33px;}
+.logo{top:5px;position:absolute;left:5%;float:left;margin-right:30px; height:60px;background: url(../img/365sec.jpg) no-repeat center center #fff;}
 /*input搜索区域*/
-.inputArea{float:left;position:relative;padding-left: 90px}
-.inputArea .searchInput{border:1px solid #bfbfbf;padding:0 15px;outline:none;height:35px;*line-height:35px;width:350px; background:url(../img/inputbg.png);font-size:14px;}
-.inputArea .searchButton{position:absolute;left:473px;top:0;*top:1px;*left:381px;width:50px;height:36px;border:none;cursor:pointer; background-color: #89B8D8; color: white}
+.inputArea{top:10px;padding-left: 12%;width: 78%;margin: 0 auto;}
+.inputArea .searchInput{border:1px solid #bfbfbf;padding:0 15px;outline:none;height:40px;*line-height:35px;width:77%; background:url(../img/inputbg.png);font-size:14px;}
+.inputArea .searchButton{*top:1px;*left:381px;width:9%;height:40px;border:none;cursor:pointer; background-color: #89B8D8; color: white}
 
 /*返回高级搜索*/
 .inputArea .advanced{position:absolute;font-size:14px;left:500px;top:12px;width:60px;text-decoration:underline;}

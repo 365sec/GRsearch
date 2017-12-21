@@ -205,7 +205,7 @@
 .kuiButton--primary:disabled, a.kuiButton--primary.kuiButton-isDisabled {
     background-color: #b6d6e0;
 }
-     .GRsearch {
+    .GRsearch {
      	top:5px;position:absolute;left:5%;float:left;margin-right:30px; height:60px;
      	}
 		</style>
@@ -213,7 +213,7 @@
 	<body onload="load()">
 		<div >
 			<div class="header1">
-				<a href="/"> <img class="GRsearch" src="static/img/365sec.jpg" > </a>
+				<a href="/"> <img class="GRsearch" src="static/img/365sec.jpg"> </a>
 				<div class="inputArea">
 					<select class="index_select" id="index_select">
 						{% ifequal s_type 'ipv4' %}
@@ -274,7 +274,7 @@
 							    	<div class="kuiFieldGroupSection">
 							    		<select id="filter_field_select">
 							    			<option>全文</option>
-							    			<option>ip</option>
+							    			<option>网址</option>
 							    			<option>城市</option>
 							    			<option>省份</option>
 							    			<option>国家/地区</option>
@@ -400,16 +400,7 @@
 							<div id="result_list" style="display: ">
 								{% for hit in all_hits %}
 								<div class="search-result-item clearfix">
-									<h3>
-										{% ifnotequal hit.protocol 'http' %}
-										<a class="search-result-item-title" href="http://{{ hit.ip }}" target="_blank" rel="noopener noreferrer"> 
-										{% endifnotequal %}
-										{% ifequal hit.protocol 'http' %}
-										<a class="search-result-item-title" href="http://{{ hit.ip }}:{{ hit.port }}" target="_blank" rel="noopener noreferrer"> 
-										{% endifequal %}
-										<i class="fa fa-external-link"> </i> 
-										</a><a class="search-result-item-title" href="/host?q={{ hit.id }}"> {{ hit.ip }} </a>
-									</h3>
+									<h3><a class="search-result-item-title" href="http://{{ hit.domain }}" target="_blank" rel="noopener noreferrer"> <i class="fa fa-external-link"> </i> </a><a class="search-result-item-title" href="/websites_detail?q={{ hit.id }}"> {{ hit.domain }} </a></h3>
 									<div class="search-result-item-info">
 										{% for protocol in hit.protocols %}
 										<p class="search-result-tags">
@@ -428,7 +419,7 @@
 											{{ hit.update_time}}
 										</p>
 									</div>
-									<pre>{{ hit.data }}</pre>
+									<pre>{{ hit.headers }}{{ hit.metadata }}</pre>
 								</div>
 								{% endfor %}
 
@@ -477,10 +468,15 @@
 				</div><!-- End of main -->
 			</div><!--End of bd-->
 		</div>
+		<script></script>
+
 	</body>
 	<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/global.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/pagination.js' %}"></script>
+	<script type="text/javascript">
+		var search_url = "{% url 'scan' %}"
+	</script>
 	<script type="text/javascript">
 	     $(document).ready(function(){
 	     	$('#filter_select').change(function(){
@@ -508,7 +504,6 @@
 	     });
 	</script>
 	<script>
-	    var search_url = "{% url 'scan' %}";
 		function add_search() {
 			var index_obj = document.getElementById("index_select");
 		    var s_type = index_obj.options[index_obj.selectedIndex].value;
@@ -563,9 +558,9 @@
 			var aggs_search_content = document.getElementById("search_content").value;
 			var filter = document.getElementById("filter_list").innerText;
 			if (filter != "[]"){
-				var aggs_url = "/ajax_submit?q={{search_content}}&filter="+filter;
+				var aggs_url = "/websites_aggs?q={{search_content}}&filter="+filter;
 			}else {
-				var aggs_url = "/ajax_submit?q={{search_content}}";
+				var aggs_url = "/websites_aggs?q={{search_content}}";
 			}
 			$.ajax({
 				url : aggs_url,
@@ -576,7 +571,6 @@
 					var map_list = json_result.map_list;
 					var province_list = json_result.province_list;
 					var city_list = json_result.city_list;
-					var protocol_list = json_result.protocol_list;
 					var max_count = json_result.max;
 					var code_list = json_result.code_list;
 					$.get('static/json/world.json', function(wjson) {
@@ -657,16 +651,6 @@
 						}
 					}
 					htmldata += city_data + "</div>";
-					var protocol_data = "<div class=\"search-result-bar-list\"><p class=\"search-result-bar-title\">端口协议</p>";
-					if (protocol_list) {
-						for (var i = 0; i < protocol_list.length; i++) {
-							var protocol_detail = "<p><span onclick=\"javascript:filter_search('端口协议','"+protocol_list[i].protocol_name+"')\" class=\"search-result-option\">";
-							protocol_detail += protocol_list[i].protocol_name + "</span><span class=\"search-result-bar\" style=\"width: "+protocol_list[i].percent+"%;\">";
-							protocol_detail += protocol_list[i].count + "</span></p>";
-							protocol_data += protocol_detail;
-						}
-					}
-					htmldata += protocol_data + "</div>";
 					document.getElementById("sideBarcontent").innerHTML = htmldata;
 				},
 				error : function(data) {
@@ -683,9 +667,9 @@
 			report_selected.setAttribute("class","");
 			var filter = document.getElementById("filter_list").innerText;
 			if (filter != "[]"){
-				var select_url = "/ajax_select?q={{search_content}}&page=" + a + "&filter="+filter;
+				var select_url = "/websites_select?q={{search_content}}&page=" + a + "&filter="+filter;
 			}else {
-				var select_url = "/ajax_select?q={{search_content}}&page=" + a;
+				var select_url = "/websites_select?q={{search_content}}&page=" + a;
 			}
 			$.ajax({
 				url : select_url,
@@ -707,12 +691,8 @@
 					if (hits) {
 						for (var i = 0; i < hits.length; i++) {
 							var record = "<div class=\"search-result-item clearfix\"><h3><a class=\"search-result-item-title\" href=\"http://";
-							if (hits[i].protocol == "http"){
-								record += hits[i].ip +":"+hits[i].port+ "\" target=\"_blank\" rel=\"noopener noreferrer\"><i class=\"fa fa-external-link\"></i></a>";
-							}else{
-							record += hits[i].ip + "\" target=\"_blank\" rel=\"noopener noreferrer\"><i class=\"fa fa-external-link\"></i></a>";
-							}
-							record += "<a class=\"search-result-item-title\" href=\"/host?q=" + hits[i].id + "\">" + hits[i].ip + "</a></h3>";
+							record += hits[i].domain + "\" target=\"_blank\" rel=\"noopener noreferrer\"><i class=\"fa fa-external-link\"></i></a>";
+							record += "<a class=\"search-result-item-title\" href=\"/websites_detail?q=" + hits[i].id + "\">" + hits[i].domain + "</a></h3>";
 							record += "<div class=\"search-result-item-info\">";
 							for (var j = 0; j < hits[i].protocols.length; j++) {
 								var protocolHtml = "<p class=\"search-result-tags\">";
@@ -720,7 +700,7 @@
 								record += protocolHtml;
 							}
 							record += "<p><span class=\"search-result-location\"><span class=\"flag flag-" + (hits[i].country_code).toLowerCase() + "\"></span>" + hits[i].country + "," + hits[i].province + "</span></p>";
-							record += "<p class=\"search-result-icon-time\"><img src=\"static/img/time.8ad35182.svg\" alt=\"time\" />" + hits[i].update_time + "</p></div><pre><xmp>" + hits[i].data +"</xmp></pre></div>";
+							record += "<p class=\"search-result-icon-time\"><img src=\"static/img/time.8ad35182.svg\" alt=\"time\" />" + hits[i].update_time + "</p></div><pre>" + hits[i].headers + hits[i].metadata + "</pre></div>";
 							result_list_data += record;
 						}
 					}
@@ -769,12 +749,12 @@
 			var aggs_search_content = document.getElementById("search_content").value;
 			var filter = document.getElementById("filter_list").innerText;
 			if (filter != "[]"){
-				var aggs_url = "/ipv4_dashboard?q={{search_content}}&filter="+filter;
+				var dashboard_url = "/websites_dashboard?q={{search_content}}&filter="+filter;
 			}else {
-				var aggs_url = "/ipv4_dashboard?q={{search_content}}";
+				var dashboard_url = "/websites_dashboard?q={{search_content}}";
 			}
 			$.ajax({
-				url : aggs_url,
+				url : dashboard_url,
 				type : 'GET',
 				success : function(result) {
 					var myChartTwo = echarts.init(document.getElementById('country_form'));
@@ -783,10 +763,11 @@
 					var myChartFive = echarts.init(document.getElementById('china_map'));
 					var json_result = JSON.parse(result);
 					var country_list = json_result.country_list;
-					var code_list = json_result.code_list;
+					var country_map_list = json_result.country_map_list;
 					var province_list = json_result.province_list;
 					var china_province_list = json_result.china_province_list;
 					var city_list = json_result.city_list;
+					var code_list = json_result.code_list;
 					var max_count = json_result.max;
 					$.get('static/json/world.json', function(wjson) {
 						echarts.registerMap('GRworld', wjson);
@@ -794,7 +775,7 @@
 						option = {
 							backgroundColor : '#fff',
 							title : {
-								text : '主机分布',
+								text : '网站分布',
 								subtext : '世界',
 								x : 'center'
 							},
@@ -841,66 +822,70 @@
 						myChart.setOption(option);
 					});
 					document.getElementById("country_map").style.display = "";
-					document.getElementById("result_total").style.display = "none";
-					document.getElementById("result_list").style.display = "none";
-					document.getElementById("page_list").style.display = "none";
-					if(!china_province_list[0]){}
-					else{
-					myChartFiveOption = {
-						title:{
-							text:'主机分布',
-							subtext:'中国',
-							x:'center'
-						},
-						tooltip:{
-							trigger:'item',
-							formatter : '{b}:{c}'
-						},
-						dataRange: {
-                             min: 0,
-                             max: china_province_list[0].value,
-                             x: 'left',
-                             y: 'bottom',
-                             text:['高','低'],           // 文本，默认为数值文本
-                             show : false
-                         },
-                         series:[
-                           {
-                           	name:'主机分布',
-                           	type:'map',
-                           	mapType:'china',
-                           	roam:false,
-                           	itemStyle:{
-                           		normal:{label:{show:true}},
-                           		emphasis:{label:{show:true}}
-                           	},
-                           	data:china_province_list
-                           }
-                         ]
-					};
-					myChartFive.setOption(myChartFiveOption);
-					document.getElementById("china_map").style.display = "";}
+					document.getElementById("search-result-list").style.display = "none";
+					if (!china_province_list[0]) {
+					} else {
+						myChartFiveOption = {
+							title : {
+								text : '网站分布',
+								subtext : '中国',
+								x : 'center'
+							},
+							tooltip : {
+								trigger : 'item',
+								formatter : '{b}:{c}'
+							},
+							dataRange : {
+								min : 0,
+								max : china_province_list[0].value,
+								x : 'left',
+								y : 'bottom',
+								text : ['高', '低'], // 文本，默认为数值文本
+								show : false
+							},
+							series : [{
+								name : '网站分布',
+								type : 'map',
+								mapType : 'china',
+								roam : false,
+								itemStyle : {
+									normal : {
+										label : {
+											show : true
+										}
+									},
+									emphasis : {
+										label : {
+											show : true
+										}
+									}
+								},
+								data : china_province_list
+							}]
+						};
+						myChartFive.setOption(myChartFiveOption);
+						document.getElementById("china_map").style.display = "";
+					}
 					var country_name_list = [];
 					var country_value_list = [];
 					if (country_list) {
-						if (country_list.length<=10){
-						for (var i = 0; i < country_list.length; i++) {
-							country_name_list.push(country_list[i].name);
-							country_value_list.push(country_list[i].value);
-						}
-						}
-						else {
+						if (country_list.length <= 10) {
+							for (var i = 0; i < country_list.length; i++) {
+								country_name_list.push(country_list[i].name);
+								country_value_list.push(country_list[i].value);
+							}
+						} else {
 							for (var i = 0; i < 10; i++) {
-							country_name_list.push(country_list[i].name);
-							country_value_list.push(country_list[i].value);
+								country_name_list.push(country_list[i].name);
+								country_value_list.push(country_list[i].value);
+							}
 						}
-					}
 					}
 					myChartTwoOption = {
 						title : {
-                           text: '全球主机国家/地区分布',
-                           x:'center'
-                              },
+							text : '全球网站国家/地区分布',
+							x : 'center'
+						},
 						color : ['#3398DB'],
 						tooltip : {
 							trigger : 'axis',
@@ -925,7 +910,7 @@
 							type : 'value'
 						}],
 						series : [{
-							name : '主机数',
+							name : '网站数',
 							type : 'bar',
 							barWidth : '60%',
 							data : country_value_list
@@ -936,23 +921,23 @@
 					var province_name_list = [];
 					var province_value_list = [];
 					if (province_list) {
-						if (province_list.length<=10){
-						for (var i = 0; i < province_list.length; i++) {
-							province_name_list.push(province_list[i].name);
-							province_value_list.push(province_list[i].value);
-						}
-						}
-						else {
+						if (province_list.length <= 10) {
+							for (var i = 0; i < province_list.length; i++) {
+								province_name_list.push(province_list[i].name);
+								province_value_list.push(province_list[i].value);
+							}
+						} else {
 							for (var i = 0; i < 10; i++) {
-							province_name_list.push(province_list[i].name);
-							province_value_list.push(province_list[i].value);
+								province_name_list.push(province_list[i].name);
+								province_value_list.push(province_list[i].value);
+							}
 						}
-					}}
+					}
 					myChartThreeOption = {
 						title : {
-                           text: '全球主机省份分布',
-                           x:'center'
-                              },
+							text : '全球网站省份分布',
+							x : 'center'
+						},
 						color : ['#3398DB'],
 						tooltip : {
 							trigger : 'axis',
@@ -977,7 +962,7 @@
 							type : 'value'
 						}],
 						series : [{
-							name : '主机数',
+							name : '网站数',
 							type : 'bar',
 							barWidth : '60%',
 							data : province_value_list
@@ -995,9 +980,9 @@
 					}
 					myChartFourOption = {
 						title : {
-                           text: '主机城市分布',
-                           x:'center'
-                              },
+							text : '网站城市分布',
+							x : 'center'
+						},
 						color : ['#3398DB'],
 						tooltip : {
 							trigger : 'axis',
@@ -1022,7 +1007,7 @@
 							type : 'value'
 						}],
 						series : [{
-							name : '主机数',
+							name : '网站数',
 							type : 'bar',
 							barWidth : '60%',
 							data : city_value_list
@@ -1041,7 +1026,7 @@
 		function filter_edit(way){
 			document.getElementById("filter_select").innerHTML = "<option>filter</option><option>range</option><option>time</option>";
 			document.getElementById("filter_filter").style.display = "";
-			document.getElementById("filter_field_select").innerHTML = "<option>全文</option><option>ip</option><option>城市</option><option>省份</option><option>国家/地区</option>";
+			document.getElementById("filter_field_select").innerHTML = "<option>全文</option><option>网址</option><option>城市</option><option>省份</option><option>国家/地区</option>";
 			document.getElementById("filter_way_select").innerHTML = "<option>等于</option><option>不等于</option><option>包含于</option><option>不包含于</option>";
 			document.getElementById("filter_value1").innerHTML = "<input id=\"filter_value\" class=\"ui-select-search input-xs ng-pristine ng-valid ng-touched\" placeholder=\"Values...\" style=\"width: 316px;\">";
 			document.getElementById("range_filter").style.display = "none";

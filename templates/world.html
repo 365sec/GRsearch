@@ -1,0 +1,232 @@
+<html>
+<head>
+<meta charset="utf-8">
+{% load staticfiles %}
+<script src="{% static 'js/map/echarts.min.js' %}"></script>
+<script src="{% static 'js/jquery.js' %}"></script>
+<style type="text/css">
+.map {
+    width: 1000px;
+	height: 1000px
+}
+</style
+</head>
+<body>
+	 <div id="map-wrap" style="height: 500px;">
+		<!-- 这里以后是地图 -->
+	</div>
+
+  
+</body>
+<script>
+$.get('static/json/world.json',function(wjson){
+						echarts.registerMap('GRworld',wjson);
+						var myChart = echarts.init(document.getElementById('map-wrap'));
+						option = {
+						geo :{
+							map : 'GRworld'
+						},
+						backgroundColor: '#fff',
+						tooltip : {
+							trigger : 'item',
+							formatter : '{b}:{c}'
+						},
+						visualMap: {
+								show: !1,
+								min: 0,
+								max: 10000,
+								realtime: !1,
+								calculable: !0,
+								inRange: {
+									color: ["#edf4fc","#267ce0"]
+								    }
+								},
+						series:[
+						   {
+						   	coordinateSystem: 'geo',
+							type: 'map',
+							map: 'GRworld',
+							data: [{
+		"name": "US",
+		"value": 62078
+	},
+	{
+		name: 'CN',
+		value: 19998
+	},
+	{
+		"name": "HK",
+		"value": 10794
+	},
+	{
+		"name": "JP",
+		"value": 6381
+	},
+	{
+		"name": "TW",
+		"value": 693
+	},
+	{
+		"name": "KR",
+		"value": 351
+	},
+	{
+		"name": "SG",
+		"value": 136
+	},
+	{
+		"name": "NL",
+		"value": 37
+	},
+	{
+		"name": "DE",
+		"value": 33
+	},
+	{
+		"name": "CA",
+		"value": 32
+	},
+	{
+		"name": "GB",
+		"value": 31
+	},
+	{
+		"name": "FR",
+		"value": 30
+	},
+	{
+		"name": "IN",
+		"value": 15
+	},
+	{
+		"name": "AU",
+		"value": 12
+	},
+	{
+		"name": "RU",
+		"value": 12
+	},
+	{
+		"name": "MY",
+		"value": 10
+	},
+	{
+		"name": "LU",
+		"value": 7
+	},
+	{
+		"name": "MO",
+		"value": 6
+	},
+	{
+		"name": "TH",
+		"value": 6
+	},
+	{
+		"name": "PH",
+		"value": 4
+	},
+	{
+		"name": "RO",
+		"value": 4
+	},
+	{
+		"name": "AE",
+		"value": 3
+	},
+	{
+		"name": "BG",
+		"value": 3
+	},
+	{
+		"name": "DK",
+		"value": 3
+	},
+	{
+		"name": "EE",
+		"value": 3
+	},
+	{
+		"name": "ES",
+		"value": 3
+	},
+	{
+		"name": "IE",
+		"value": 3
+	},
+	{
+		"name": "SE",
+		"value": 3
+	},
+	{
+		"name": "CZ",
+		"value": 2
+	},
+	{
+		"name": "IR",
+		"value": 2
+	},
+	{
+		"name": "IT",
+		"value": 2
+	},
+	{
+		"name": "LV",
+		"value": 2
+	},
+	{
+		"name": "NZ",
+		"value": 2
+	},
+	{
+		"name": "VN",
+		"value": 2
+	},
+	{
+		"name": "CH",
+		"value": 1
+	},
+	{
+		"name": "CY",
+		"value": 1
+	},
+	{
+		"name": "GI",
+		"value": 1
+	},
+	{
+		"name": "PL",
+		"value": 1
+	},
+	{
+		"name": "RS",
+		"value": 1
+	},
+	{
+		"name": "SC",
+		"value": 1
+	},
+	{
+		"name": "TN",
+		"value": 1
+	},
+	{
+		"name": "TR",
+		"value": 1
+	},
+	{
+		"name": "VG",
+		"value": 1
+	},
+	{
+		"name": "ZA",
+		"value": 1
+	}]
+						   }
+						]
+					};
+					myChart.setOption(option);
+					
+					});
+</script>
+</html>
