@@ -122,3 +122,31 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static")
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+        },
+        'tofile':{
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/test.log',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+       'ip': {
+            'handlers': ['tofile'],
+            'propagate': True,
+            'level':'INFO',
+        },
+    }
+}

@@ -8,7 +8,6 @@
 		<link href="{% static 'css/result.css' %}" rel="stylesheet" type="text/css"/>
 		<link href="{% static 'css/main.e74719ea.css' %}" rel="stylesheet" type="text/css"/>
 		<link href="{% static 'css/host/font-awesome.min.css' %}" rel="stylesheet" type="text/css"/>
-		<script src="{% static 'assets/fofa/fofa-d68d517bf641867705600d20bd610400f43bfcf590f485d2973a19e2e3100c84.js' %}" data-turbolinks-track="reload"></script>
 		<script src="{% static 'js/map/echarts.min.js' %}"></script>
 		<script src="{% static 'js/map/world.js' %}"></script>
 		<script src="{% static 'js/map/china.js' %}"></script>
@@ -127,87 +126,91 @@
 				    margin-top: 5px;
 				}
 			.kuiFieldGroupSection+.kuiFieldGroupSection {
-    margin-left: 10px;
-}
-
-.filterEditor__wideField {
-    min-width: 0;
-}
-.kuiFieldGroupSection--wide {
-    -webkit-box-flex: 1;
-    -webkit-flex: 1 1 auto;
-    -ms-flex: 1 1 auto;
-    flex: 1 1 auto;
-}
-.ui-select-multiple.ui-select-bootstrap input.ui-select-search {
-    background-color: transparent!important;
-    border: none;
-    outline: none;
-    height: 1.666666em;
-    margin-bottom: 3px;
-}
-.kuiModalFooter {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: end;
-    -webkit-justify-content: flex-end;
-    -ms-flex-pack: end;
-    justify-content: flex-end;
-    padding: 0 10px 10px;
-}
-.kuiBar, .kuiBarSection {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
-}
-.kuiBar {
-    -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-    min-height: 30px;
-}
-.kuiButton--basic {
-    color: #5a5a5a;
-    background-color: #f2f2f2;
-}
-.kuiButton {
-    display: inline-block;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    cursor: pointer;
-    padding: 4px 12px 5px;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.5;
-    height: 30px;
-    text-decoration: none;
-    border: none;
-    border-radius: 4px;
-}
-.index_select {
-	border: 1px solid #bfbfbf;
-    padding: 0 15px;
-    outline: none;
-    height: 40px;
-    width: 12%;
-    background: url(../img/inputbg.png);
-    font-size: 14px;
-}
-.kuiButton--primary:disabled, a.kuiButton--primary.kuiButton-isDisabled {
-    background-color: #b6d6e0;
-}
-     .GRsearch {
-     	top:5px;position:absolute;left:5%;float:left;margin-right:30px; height:60px;
-     	}
+			    margin-left: 10px;
+			}
+			
+			.filterEditor__wideField {
+			    min-width: 0;
+			}
+			.kuiFieldGroupSection--wide {
+			    -webkit-box-flex: 1;
+			    -webkit-flex: 1 1 auto;
+			    -ms-flex: 1 1 auto;
+			    flex: 1 1 auto;
+			}
+			.ui-select-multiple.ui-select-bootstrap input.ui-select-search {
+			    background-color: transparent!important;
+			    border: none;
+			    outline: none;
+			    height: 1.666666em;
+			    margin-bottom: 3px;
+			}
+			.kuiModalFooter {
+			    display: -webkit-box;
+			    display: -webkit-flex;
+			    display: -ms-flexbox;
+			    display: flex;
+			    -webkit-box-pack: end;
+			    -webkit-justify-content: flex-end;
+			    -ms-flex-pack: end;
+			    justify-content: flex-end;
+			    padding: 0 10px 10px;
+			}
+			.kuiBar, .kuiBarSection {
+			    display: -webkit-box;
+			    display: -webkit-flex;
+			    display: -ms-flexbox;
+			    display: flex;
+			    -webkit-box-align: center;
+			    -webkit-align-items: center;
+			    -ms-flex-align: center;
+			    align-items: center;
+			}
+			.kuiBar {
+			    -webkit-box-pack: justify;
+			    -webkit-justify-content: space-between;
+			    -ms-flex-pack: justify;
+			    justify-content: space-between;
+			    min-height: 30px;
+			}
+			.kuiButton--basic {
+			    color: #5a5a5a;
+			    background-color: #f2f2f2;
+			}
+			.kuiButton {
+			    display: inline-block;
+			    -webkit-appearance: none;
+			    -moz-appearance: none;
+			    appearance: none;
+			    cursor: pointer;
+			    padding: 4px 12px 5px;
+			    font-size: 14px;
+			    font-weight: 400;
+			    line-height: 1.5;
+			    height: 30px;
+			    text-decoration: none;
+			    border: none;
+			    border-radius: 4px;
+			}
+			.index_select {
+				border: 1px solid #bfbfbf;
+			    padding: 0 15px;
+			    outline: none;
+			    height: 40px;
+			    width: 12%;
+			    background: url(../img/inputbg.png);
+			    font-size: 14px;
+			}
+			.kuiButton--primary:disabled, a.kuiButton--primary.kuiButton-isDisabled {
+			    background-color: #b6d6e0;
+			}
+		     .GRsearch {
+		     	top:5px;position:absolute;left:5%;float:left;margin-right:30px; height:60px;
+		     	}
+		     .search-result-tags1 {
+			    height: 40px;
+			    overflow: hidden;
+			}
 		</style>
 	</head>
 	<body onload="load()">
@@ -412,11 +415,10 @@
 									</h3>
 									<div class="search-result-item-info">
 										{% for protocol in hit.protocols %}
-										<p class="search-result-tags">
-											<a href="scan?q={{ search_content }}&s_type={{ s_type }}&filter={{ hit.protocol }}">
-											<button type="button" class="ant-btn ant-btn-primary">
+										<p class="search-result-tags1">
+											<button onclick="javascript:filter_search('端口协议','{{ protocol }}')" type="button" class="ant-btn ant-btn-primary">
 												<span> {{ protocol }} </span>
-											</button> </a>
+											</button>
 										</p>
 										{% endfor %}
 										<p>
@@ -670,7 +672,6 @@
 					document.getElementById("sideBarcontent").innerHTML = htmldata;
 				},
 				error : function(data) {
-					alert(data);
 				}
 			});
 		}
@@ -681,6 +682,12 @@
 			result_selected.setAttribute("class","active");
 			report_selected = document.getElementById("report_selected");
 			report_selected.setAttribute("class","");
+			document.getElementById("country_map").style.display = "none";
+			document.getElementById("country_form").style.display = "none";
+			document.getElementById("province_form").style.display = "none";
+			document.getElementById("china_map").style.display = "none";
+			document.getElementById("city_form").style.display = "none";
+			document.getElementById("search-result-list").style.display = "";
 			var filter = document.getElementById("filter_list").innerText;
 			if (filter != "[]"){
 				var select_url = "/ajax_select?q={{search_content}}&page=" + a + "&filter="+filter;
@@ -747,15 +754,8 @@
 					}
 					result_list_data += "</ul></div></div>";
 					document.getElementById("search-result-list").innerHTML = result_list_data;
-					document.getElementById("country_map").style.display = "none";
-					document.getElementById("country_form").style.display = "none";
-					document.getElementById("province_form").style.display = "none";
-					document.getElementById("china_map").style.display = "none";
-					document.getElementById("city_form").style.display = "none";
-					document.getElementById("search-result-list").style.display = "";
 				},
 				error : function(data) {
-					alert(data);
 				}
 			});
 		}
@@ -766,6 +766,12 @@
 			result_selected.setAttribute("class","");
 			report_selected = document.getElementById("report_selected");
 			report_selected.setAttribute("class","active");
+			document.getElementById("search-result-list").style.display = "none";
+			document.getElementById("country_map").style.display = "";
+			document.getElementById("china_map").style.display = "";
+			document.getElementById("country_form").style.display = "";
+			document.getElementById("province_form").style.display = "";
+			document.getElementById("city_form").style.display = "";
 			var aggs_search_content = document.getElementById("search_content").value;
 			var filter = document.getElementById("filter_list").innerText;
 			if (filter != "[]"){
@@ -840,10 +846,7 @@
 						};
 						myChart.setOption(option);
 					});
-					document.getElementById("country_map").style.display = "";
-					document.getElementById("result_total").style.display = "none";
-					document.getElementById("result_list").style.display = "none";
-					document.getElementById("page_list").style.display = "none";
+					
 					if(!china_province_list[0]){}
 					else{
 					myChartFiveOption = {
@@ -879,7 +882,7 @@
                          ]
 					};
 					myChartFive.setOption(myChartFiveOption);
-					document.getElementById("china_map").style.display = "";}
+					}
 					var country_name_list = [];
 					var country_value_list = [];
 					if (country_list) {
@@ -932,7 +935,6 @@
 						}]
 					};
 					myChartTwo.setOption(myChartTwoOption);
-					document.getElementById("country_form").style.display = "";
 					var province_name_list = [];
 					var province_value_list = [];
 					if (province_list) {
@@ -984,7 +986,6 @@
 						}]
 					};
 					myChartThree.setOption(myChartThreeOption);
-					document.getElementById("province_form").style.display = "";
 					var city_name_list = [];
 					var city_value_list = [];
 					if (city_list) {
@@ -1029,10 +1030,8 @@
 						}]
 					};
 					myChartFour.setOption(myChartFourOption);
-					document.getElementById("city_form").style.display = "";
 				},
 				error : function(data) {
-					alert(data);
 				}
 			});
 		}

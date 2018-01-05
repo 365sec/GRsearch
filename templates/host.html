@@ -1,4 +1,4 @@
-<html lang="en">
+<html>
 	{% load staticfiles %}
 	<head>
 		<title>{{ metainfo.ip }}</title>
@@ -31,7 +31,7 @@
 			}
 		</style>
 	</head>
-	<body class="">
+	<body >
 		<div class="container-fluid">
 			<div class="row-fluid">
 				<div id="host-map" class="leaflet-container leaflet-fade-anim" tabindex="0" style="position: relative;">
@@ -130,26 +130,7 @@
 									</div>
 								</li>
 								{% endifequal %}
-								{% ifequal hit.protocol 'mysql' %}
-								<li class="service service-long">
-									<a name="{{ hit.port}}"></a>
-									<div class="service-details">
-										<div class="port">
-											{{ hit.port }}
-										</div>
-										<div class="protocol">
-											{{ hit.protocol }}
-										</div>
-									</div>
-									<div class="service-main">
-										<h3>data</h3>
-										<pre deep="8">{{ hit.banner_data}}</pre>
-										<div class="clear"></div>
-									</div>
-								</li>
-								{% endifequal %}
 								{% ifnotequal hit.protocol 'http' %}
-								{% ifnotequal hit.protocol 'mysql' %}
 								<li class="service service-long">
 									<a name="{{ hit.port}}"></a>
 									<div class="service-details">
@@ -161,15 +142,11 @@
 										</div>
 									</div>
 									<div class="service-main">
-										<h3>metadata</h3>
-										<pre deep="8">{{ hit.metadata}}</pre>
-										<div class="clear"></div>
 										<h3>data</h3>
-										<pre deep="8">{{ hit.banner_data}}</pre>
+										<pre deep="8">{{ hit.content}}</pre>
 										<div class="clear"></div>
 									</div>
 								</li>
-								{% endifnotequal %}
 								{% endifnotequal %}
 								{% endfor %}
 							</ul>

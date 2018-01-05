@@ -8,7 +8,6 @@
 		<link href="{% static 'css/result.css' %}" rel="stylesheet" type="text/css"/>
 		<link href="{% static 'css/main.e74719ea.css' %}" rel="stylesheet" type="text/css"/>
 		<link href="{% static 'css/host/font-awesome.min.css' %}" rel="stylesheet" type="text/css"/>
-		<script src="{% static 'assets/fofa/fofa-d68d517bf641867705600d20bd610400f43bfcf590f485d2973a19e2e3100c84.js' %}" data-turbolinks-track="reload"></script>
 		<script src="{% static 'js/map/echarts.min.js' %}"></script>
 		<script src="{% static 'js/map/world.js' %}"></script>
 		<script src="{% static 'js/map/china.js' %}"></script>
@@ -468,8 +467,6 @@
 				</div><!-- End of main -->
 			</div><!--End of bd-->
 		</div>
-		<script></script>
-
 	</body>
 	<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/global.js' %}"></script>
@@ -665,6 +662,12 @@
 			result_selected.setAttribute("class","active");
 			report_selected = document.getElementById("report_selected");
 			report_selected.setAttribute("class","");
+			document.getElementById("country_map").style.display = "none";
+			document.getElementById("country_form").style.display = "none";
+			document.getElementById("province_form").style.display = "none";
+			document.getElementById("china_map").style.display = "none";
+			document.getElementById("city_form").style.display = "none";
+			document.getElementById("search-result-list").style.display = "";
 			var filter = document.getElementById("filter_list").innerText;
 			if (filter != "[]"){
 				var select_url = "/websites_select?q={{search_content}}&page=" + a + "&filter="+filter;
@@ -727,12 +730,6 @@
 					}
 					result_list_data += "</ul></div></div>";
 					document.getElementById("search-result-list").innerHTML = result_list_data;
-					document.getElementById("country_map").style.display = "none";
-					document.getElementById("country_form").style.display = "none";
-					document.getElementById("province_form").style.display = "none";
-					document.getElementById("china_map").style.display = "none";
-					document.getElementById("city_form").style.display = "none";
-					document.getElementById("search-result-list").style.display = "";
 				},
 				error : function(data) {
 					alert(data);
@@ -746,6 +743,12 @@
 			result_selected.setAttribute("class","");
 			report_selected = document.getElementById("report_selected");
 			report_selected.setAttribute("class","active");
+			document.getElementById("search-result-list").style.display = "none";
+			document.getElementById("country_map").style.display = "";
+			document.getElementById("china_map").style.display = "";
+			document.getElementById("country_form").style.display = "";
+			document.getElementById("province_form").style.display = "";
+			document.getElementById("city_form").style.display = "";
 			var aggs_search_content = document.getElementById("search_content").value;
 			var filter = document.getElementById("filter_list").innerText;
 			if (filter != "[]"){
@@ -821,8 +824,6 @@
 						};
 						myChart.setOption(option);
 					});
-					document.getElementById("country_map").style.display = "";
-					document.getElementById("search-result-list").style.display = "none";
 					if (!china_province_list[0]) {
 					} else {
 						myChartFiveOption = {
@@ -864,7 +865,6 @@
 							}]
 						};
 						myChartFive.setOption(myChartFiveOption);
-						document.getElementById("china_map").style.display = "";
 					}
 					var country_name_list = [];
 					var country_value_list = [];
@@ -917,7 +917,6 @@
 						}]
 					};
 					myChartTwo.setOption(myChartTwoOption);
-					document.getElementById("country_form").style.display = "";
 					var province_name_list = [];
 					var province_value_list = [];
 					if (province_list) {
@@ -969,7 +968,6 @@
 						}]
 					};
 					myChartThree.setOption(myChartThreeOption);
-					document.getElementById("province_form").style.display = "";
 					var city_name_list = [];
 					var city_value_list = [];
 					if (city_list) {
@@ -1014,7 +1012,6 @@
 						}]
 					};
 					myChartFour.setOption(myChartFourOption);
-					document.getElementById("city_form").style.display = "";
 				},
 				error : function(data) {
 					alert(data);

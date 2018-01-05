@@ -5,8 +5,15 @@ import json
 import re
 import urllib2
 from elasticsearch import Elasticsearch
+import ConfigParser
+import os
 
-client = Elasticsearch("172.16.39.233:9200")
+conf = ConfigParser.ConfigParser()
+conf.read(os.path.join(os.path.dirname(__file__),"..","TSsearch"))
+str_es_hosts = conf.get("elasticsearch", "hosts")
+es_hosts = json.loads(str_es_hosts)
+es_timeout = int(conf.get("elasticsearch", "timeout"))
+client = Elasticsearch(hosts=es_hosts,timeout=es_timeout)
 
 def search(request):
     _id = request.GET.get('q', '')
@@ -142,21 +149,9 @@ def search(request):
                       port_dict["read_status"] = "fail"
                 else:
                     port_dict["cat_status"] = "no"
-        elif port_dict["protocol"]=="mysql":
-            if source[protocol.split('/')[0]]["mysql"]["banner"].has_key("data") == True:
-                port_dict["banner_data"] = json.dumps(source[protocol.split('/')[0]]["mysql"]["banner"]["data"],indent=4)
-            else :
-                port_dict["banner_data"] = ""
-            if source[protocol.split('/')[0]]["mysql"]["banner"].has_key("metadata") == True:
-                port_dict["metadata"] = json.dumps(source[protocol.split('/')[0]]["mysql"]["banner"]["metadata"],indent=4)
-            else :
-                port_dict["metadata"] = ""
         else:
-            if source[port_dict["port"]][port_dict["protocol"]]["banner"].has_key("metadata") == True:
-                port_dict["metadata"] = json.dumps(source[port_dict["port"]][port_dict["protocol"]]["banner"]["metadata"],indent=4)
-            else :
-                port_dict["metadata"] = ""
-            port_dict["banner_data"] = json.dumps(source[protocol.split('/')[0]],indent=4)
+            for key in (source[port_dict["port"]][port_dict["protocol"]]).keys():
+                port_dict["content"] = json.dumps(source[port_dict["port"]][port_dict["protocol"]][key],indent=4)
         port_name_list.append(protocol.split('/')[0])
         port_list.append(port_dict)
     return render(request,'host.html',{

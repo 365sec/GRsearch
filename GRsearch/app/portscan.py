@@ -5,21 +5,52 @@ import json
 import re
 import urllib2
 import time
+import ConfigParser
 from elasticsearch import Elasticsearch
-from thrift import Thrift
-from thrift.transport import TSocket
-from thrift.transport import TTransport
-from thrift.protocol import TBinaryProtocol
 from django.shortcuts import render, HttpResponse
-from hbase import Hbase
-from hbase.ttypes import *
+import os
+import logging
 
-client = Elasticsearch(hosts=["172.16.39.231","172.16.39.232","172.16.39.233","172.16.39.234"],timeout=5000)
+
+logger = logging.getLogger("ip")
+conf = ConfigParser.ConfigParser()
+conf.read(os.path.join(os.path.dirname(__file__),"..","TSsearch"))
+str_es_hosts = conf.get("elasticsearch", "hosts")
+print str_es_hosts
+es_hosts = json.loads(str_es_hosts)
+es_timeout = int(conf.get("elasticsearch", "timeout"))
+client = Elasticsearch(hosts=es_hosts,timeout=es_timeout)
+
+def get_time_stamp():
+    ct = time.time()
+    local_time = time.localtime(ct)
+    data_head = time.strftime("%Y-%m-%dT%H:%M:%S", local_time)
+    data_secs = (ct - long(ct)) * 1000
+    time_stamp = "%s.%03d" % (data_head, data_secs)
+    return time_stamp
+
 
 def search(request):
     search_content = request.GET.get('q', '')   
     page = int(request.GET.get("page", "1"))
     filter = request.GET.get('filter', '')
+    if request.META.has_key('HTTP_X_FORWARDED_FOR'):  
+        ip =  request.META['HTTP_X_FORWARDED_FOR']  
+    else:  
+        ip = request.META['REMOTE_ADDR'] 
+    #访问日志
+    if filter != "":
+        filter_log = "["
+        for dict in json.loads(filter):
+            if dict != "":
+                filter_log += dict["filter"]+","
+        filter_log_content = filter_log[:-1]
+        filter_log_content += "]"
+        print filter_log
+        log_content = str(ip)+" ["+ get_time_stamp()+"+0800] \""+ search_content+"\" "+"\""+filter_log_content+"\""
+    else:
+        log_content = str(ip)+" ["+ get_time_stamp()+"+0800] \""+ search_content+"\" "+"\"\""
+    logger.info(log_content)
     current_page = page
     last_page = current_page - 1
     next_page = current_page + 1
@@ -449,7 +480,6 @@ def search(request):
                                                         "filter": filter,
                                                         "filter_list": json.loads(filter)         
                                                })
-        
 def ipv4_es_china(search_content, page, current_page, last_page, next_page, s_type, index_dict):
     response = client.search(
                              index=index_dict[s_type],
@@ -1145,7 +1175,8 @@ def ipv4_with_field(search_content, page, current_page, last_page, next_page, s_
                                               }
     return context 
 def ipv4_with_content(search_content, page, current_page, last_page, next_page, s_type, index_dict):
-    response = client.search(
+    if search_content != "":
+        response = client.search(
                                 index=index_dict[s_type],
                                 doc_type="ipv4host",
                                 body={
@@ -1156,6 +1187,21 @@ def ipv4_with_content(search_content, page, current_page, last_page, next_page, 
                                             "_all": search_content
                                                  }
                                          },
+                                     "highlight": {
+                                         "require_field_match": "false",
+                                         "fields": {
+                                              "*": {}
+                                                }
+                                            }
+                                      }
+                                )
+    else:
+        response = client.search(
+                                index=index_dict[s_type],
+                                doc_type="ipv4host",
+                                body={
+                                     "from": (page - 1) * 20,
+                                     "size": 20,
                                      "highlight": {
                                          "require_field_match": "false",
                                          "fields": {
@@ -3371,7 +3417,8 @@ def ipv4_with_content_with_filter(search_content, page, current_page, last_page,
                                                           }
                                               }
                     filter_query.append(filter_dict)
-    response = client.search(
+    if search_content != "":
+        response = client.search(
                                 index=index_dict[s_type],
                                 doc_type="ipv4host",
                                 body={
@@ -3386,6 +3433,26 @@ def ipv4_with_content_with_filter(search_content, page, current_page, last_page,
                                                                }
                                                       }
                                                      ],
+                                            "filter": filter_query
+                                                }
+                                            },
+                                     "highlight": {
+                                         "require_field_match": "false",
+                                         "fields": {
+                                              "*": {}
+                                                }
+                                            }
+                                      }
+                                )
+    else:
+        response = client.search(
+                                index=index_dict[s_type],
+                                doc_type="ipv4host",
+                                body={
+                                     "from": (page - 1) * 20,
+                                     "size": 20,
+                                     "query": {
+                                        "bool": {
                                             "filter": filter_query
                                                 }
                                             },
